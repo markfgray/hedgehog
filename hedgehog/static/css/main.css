@@ -1,0 +1,35 @@
+html {
+	font-family: verdana;
+	background-color: #3a849a;
+}
+
+header {
+	background-color: silver;
+}
+
+header img {
+	width:30%;
+	margin-left: 35%
+}
+
+header h3 {
+	position: relative;
+	bottom: 200px;
+}
+
+
+main {
+	background-color: white;
+}
+
+.tagline {
+	font-size: 32px;
+	width: 100%;
+	text-align: center;
+    background-color: grey;
+}
+
+.container {
+	width:100%;
+	height:500px;
+}
