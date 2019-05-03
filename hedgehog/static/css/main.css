@@ -3,33 +3,45 @@ html {
 	background-color: #3a849a;
 }
 
-header {
-	background-color: silver;
+#logo {
+    width: 50%;
+    margin-left: 25%;
+    position: relative;
+    bottom: 140px;
 }
 
-header img {
-	width:30%;
-	margin-left: 35%
+#tagline {
+    width: 100%;
+    position: relative;
+    text-align: center;
+    bottom: 300px;
+    font-size: 38px;
 }
 
-header h3 {
-	position: relative;
-	bottom: 200px;
+#coming-soon {
+    width: 100%;
+    text-align: center;
+    font-style: italic;
+    position: relative;
+    bottom: 260px;
 }
 
-
-main {
-	background-color: white;
+@media screen and (max-width: 400px) {
+  
+    #logo {
+    width: 80%;
+    margin-left: 10%;
+    position: relative;
+    bottom: 70px;
 }
 
-.tagline {
-	font-size: 32px;
-	width: 100%;
-	text-align: center;
-    background-color: grey;
+    #tagline {
+        bottom: 170px;
+    }
+
+    #coming-soon {
+        position: relative;
+        bottom: 130px;
+    }
 }
 
-.container {
-	width:100%;
-	height:500px;
-}
