@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Hedgehog</title>
+		<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" >
+		<meta http-equiv="Cache-Control" content="no-cache"/>
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-139433876-1"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+
+		  gtag('config', 'UA-139433876-1');
+		</script>
+	</head>
+	<body>
+	<img id="logo" src="../static/img/HEDGEHOG.png" alt="Hedgehog Logo">
+	<div class="text-container thanks">
+		<p>Thanks for Signing up</p>
+		<p>We'll send you an email at {{email}} when we're up and running.
+	</div>
+	</body>
+</html>

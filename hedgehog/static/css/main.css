@@ -67,6 +67,11 @@ html {
     font-size: 28px;
 }
 
+.thanks {
+    position: relative;
+    top: 100px;
+}
+
 @media screen and (max-width: 810px) {
   
     .text-container {
