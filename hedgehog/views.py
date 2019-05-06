@@ -17,10 +17,10 @@ def signup():
 		db.session.add(interested_user)
 		db.session.commit()
 		#return "Thanks for singing up. We'll send you an email at {} when we're up and running".format(interested_user.email)
-		return redirect(url_for('thanks', email=email))
+		return redirect(url_for('thanks'))
 	except Exception as e:
 	    return(str(e))
 
-@app.route('/thanks/<email>', methods=["GET"])
-def thanks(email):
-	return render_template('thankyou.html', email=email)
+@app.route('/thanks', methods=["GET"])
+def thanks():
+	return render_template('thankyou.html')
