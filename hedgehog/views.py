@@ -11,15 +11,18 @@ def index():
 
 @app.route('/signup', methods=["GET", "POST"])
 def signup():
-	email = request.form['email']
-	try:
-		interested_user = RegisterInterest(email=email)
-		db.session.add(interested_user)
-		db.session.commit()
-		#return "Thanks for singing up. We'll send you an email at {} when we're up and running".format(interested_user.email)
-		return redirect(url_for('thanks'))
-	except Exception as e:
-	    return(str(e))
+	if request.method == "GET":
+		return render_template('signup.html')
+	else:
+		email = request.form['email']
+		try:
+			interested_user = RegisterInterest(email=email)
+			db.session.add(interested_user)
+			db.session.commit()
+			#return "Thanks for singing up. We'll send you an email at {} when we're up and running".format(interested_user.email)
+			return redirect(url_for('thanks'))
+		except Exception as e:
+		    return(str(e))
 
 @app.route('/thanks', methods=["GET"])
 def thanks():
@@ -44,10 +47,7 @@ def placeDetails():
 @app.route('/results', methods=["GET", "POST"])
 def results():
 	return render_template('results.html')
-
-@app.route('/signup', methods=["GET", "POST"])
-def signup():
-	return render_template('signup.html')
+	
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
