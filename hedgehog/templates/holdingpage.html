@@ -11,6 +11,7 @@
 		<title>Hedgehog</title>
 		<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" >
 		<meta http-equiv="Cache-Control" content="no-cache"/>
+		<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="07cb2432-1f30-40c7-8cf5-b8e17220da9a" type="text/javascript" async></script>
 	</head>
 	<body>
 		<!-- Google Tag Manager (noscript) -->
@@ -20,8 +21,32 @@
 
 	<img id="logo" src="../static/img/HEDGEHOG.png" alt="Hedgehog Logo">
 	<div id="tagline">Ratings and Reviews You Can Trust</div>
-	<div class="results-container">
-		<h1>Here are your search results</h1>
+	<div class="text-container">
+		<p>
+			Are you frustrated by fake reviews?
+		</p>
+		<p>
+			Are you tired of everywhere having the same rating of 4.5 stars?
+		</p>
+		<p>
+			Hedgehog uses a clever algorithm to sniff out fake reviews and give you meaningful ratings on pubs, restaurants and hotels that you can trust
+		</p>
+		<p>
+			We'll even personalise them as we get to know you better
+		</p>
+	</div>
+	<div class="form-container">
+		<p>Sign up for early access!</p>
+		<form method="POST" action="/signup">
+	        {{ form.hidden_tag() }}
+
+	        <div class="form-group">
+	          {{ form.email.label(class='form-label') }}
+	          {{ form.email(class='form-entry-field') }}
+	        </div>
+
+	        {{ form.submit(class="btn signup", id="submit") }}
+		</form>
 	</div>
 	</body>
 </html>

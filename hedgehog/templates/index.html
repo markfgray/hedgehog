@@ -21,31 +21,17 @@
 
 	<img id="logo" src="../static/img/HEDGEHOG.png" alt="Hedgehog Logo">
 	<div id="tagline">Ratings and Reviews You Can Trust</div>
-	<div class="text-container">
-		<p>
-			Are you frustrated by fake reviews?
-		</p>
-		<p>
-			Are you tired of everywhere having the same rating of 4.5 stars?
-		</p>
-		<p>
-			Hedgehog uses a clever algorithm to sniff out fake reviews and give you meaningful ratings on pubs, restaurants and hotels that you can trust
-		</p>
-		<p>
-			We'll even personalise them as we get to know you better
-		</p>
-	</div>
-	<div class="form-container">
-		<p>Sign up for early access!</p>
-		<form method="POST" action="/signup">
+	<div class="search-form-container">
+		<form method="POST" action="/">
 	        {{ form.hidden_tag() }}
 
-	        <div class="form-group">
-	          {{ form.email.label(class='form-label') }}
-	          {{ form.email(class='form-entry-field') }}
-	        </div>
+	        <p>Search for restaurants, pubs and hotels</p>
 
-	        {{ form.submit(class="btn signup", id="submit") }}
+	        {{ form.search(class='form-entry-field') }}
+	        
+
+	        {{ form.submit(class="btn search", id="submit") }}
+	        <a class="btn leave-review" href="/leavereview">Leave a Review</a>
 		</form>
 	</div>
 	</body>
