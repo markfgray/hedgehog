@@ -1,6 +1,7 @@
 from hedgehog import app, db
 from flask import render_template, request, url_for, redirect
 from .forms import SearchForm
+from .search import query
 
 @app.route('/', methods=["GET", "POST"])
 def index():
@@ -9,12 +10,12 @@ def index():
 		return render_template('index.html', form=form)
 	else:
 		search_term = request.form['search']
-		return search_term
+		return search(search_term)
 
-
-@app.route('/search', methods=["GET", "POST"])
-def search():
-	return render_template('search.html')
+@app.route('/search', methods=["GET"])
+def search(search_term):
+	results = query(search_term)
+	return render_template('results.html', results=results)
 
 @app.route('/leavereview', methods=["GET", "POST"])
 def leaveReview():
@@ -27,10 +28,6 @@ def localPlaces():
 @app.route('/placedetails', methods=["GET", "POST"])
 def placeDetails():
 	return render_template('placedetails.html')
-
-@app.route('/results', methods=["GET", "POST"])
-def results():
-	return render_template('results.html')
 	
 
 @app.route('/login', methods=["GET", "POST"])
