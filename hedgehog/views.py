@@ -15,7 +15,7 @@ def index():
 @app.route('/search', methods=["GET"])
 def search(search_term):
 	results = query(search_term)
-	return render_template('results.html', results=results)
+	return render_template('results.html', results=results, search_term=search_term)
 
 @app.route('/leavereview', methods=["GET", "POST"])
 def leaveReview():

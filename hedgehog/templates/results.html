@@ -21,12 +21,17 @@
 	<img id="logo" src="../static/img/HEDGEHOG.png" alt="Hedgehog Logo">
 	<div id="tagline">Ratings and Reviews You Can Trust</div>
 	<div class="search-results">
+	<h1> {{search_term}}</h1>
 
 	{% if results %}
 
 	{% for result in results %}
 		<div class="result" id="{{result['name']}}">
 			<div class="place-name"> {{result['name']}}</div>
+			<div class="ratings-box">
+				<div class="place-score">50</div>
+				<div class="place-number-of-votes">10 ratings</div>
+			</div>
 		</div>	
 	{% endfor %}
 
