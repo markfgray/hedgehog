@@ -2,7 +2,7 @@ from hedgehog import app, db
 from flask import render_template, request, url_for, redirect
 from .forms import SearchForm
 from .search import query
-
+from .review import placesNearMe
 @app.route('/', methods=["GET", "POST"])
 def index():
 	if request.method == "GET":
@@ -19,7 +19,8 @@ def search(search_term):
 
 @app.route('/leavereview', methods=["GET", "POST"])
 def leaveReview():
-	return render_template('leavereview.html')
+	results = placesNearMe()
+	return render_template('leavereview.html', results=results)
 
 @app.route('/localplaces', methods=["GET", "POST"])
 def localPlaces():
