@@ -17,18 +17,17 @@ def search(search_term):
 	results = query(search_term)
 	return render_template('results.html', results=results, search_term=search_term)
 
-@app.route('/leavereview', methods=["GET", "POST"])
-def leaveReview():
-	results = placesNearMe()
-	return render_template('leavereview.html', results=results)
-
 @app.route('/localplaces', methods=["GET", "POST"])
 def localPlaces():
-	return render_template('localplaces.html')
+	if request.method == "GET":
+		results = placesNearMe()
+		return render_template('localplaces.html', results=results)
+	else:
+		return render_template('leavereview.html')
 
-@app.route('/placedetails', methods=["GET", "POST"])
-def placeDetails():
-	return render_template('placedetails.html')
+@app.route('/placedetails/<placename>', methods=["GET", "POST"])
+def placeDetails(placename):
+	return render_template('placedetails.html', placename=placename)
 	
 
 @app.route('/login', methods=["GET", "POST"])
