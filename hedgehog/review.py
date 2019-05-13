@@ -9,6 +9,7 @@ geo_api_url = 'https://www.googleapis.com/geolocation/v1/geolocate?key='
 def placesNearMe():
 	raw_ipdata = requests.post(geo_api_url+api_key)
 	ipdata = raw_ipdata.json()
+	print(ipdata)
 	lat = str(ipdata["location"]['lat'])
 	longi = str(ipdata["location"]['lng'])
 	location = lat + ", " + longi
