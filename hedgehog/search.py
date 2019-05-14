@@ -4,7 +4,7 @@ from hedgehog import api_key
 
 
 url = "https://maps.googleapis.com/maps/api/place/textsearch/json?"
-
+details_url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid='
 
 def query(search_term):
 	r = requests.get(url + 'query=' + search_term +
@@ -13,5 +13,9 @@ def query(search_term):
 	y = x['results']
 	results = []
 	for result in y:
-		results.append({'name': result['name'], 'type': result['types']})
+		place_id = result['place_id']
+		a = requests.get(details_url + place_id + '&fields=rating&key=' + api_key)
+		b = a.json()
+		rating = b['result']['rating']
+		results.append({'name': result['name'], 'type': result['types'], 'rating': str(rating)})
 	return results
