@@ -17,6 +17,7 @@ def placesNearMe():
 	r = requests.get(url + 'location=' + location + '&radius=' + radius + '&key=' + api_key)
 	x = r.json()
 	y = x['results']
+	print(y)
 	accepted_types = ['lodging', 'food', 'bar', 'restaurant']
 	results = []
 	for result in y:

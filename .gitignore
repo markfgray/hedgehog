@@ -3,3 +3,4 @@ __pycache__/
 hedgehog/__pycache__
 .env
 heroku_aliases.txt
+example_responses.txt
