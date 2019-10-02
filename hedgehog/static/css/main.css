@@ -32,6 +32,8 @@ html {
 
 .search-form-container p{
     font-size: 24px;
+    margin-left: 5%;
+    text-align: center;
 }
 
 .form-container p {
