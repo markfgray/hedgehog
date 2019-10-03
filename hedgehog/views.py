@@ -1,8 +1,10 @@
 from hedgehog import app, db
-from flask import render_template, request, url_for, redirect
-from .forms import SearchForm
+from flask import render_template, request, url_for, redirect, session
+from .forms import SearchForm, LoginForm
 from .search import query
 from .review import placesNearMe
+from .models import User
+
 @app.route('/', methods=["GET", "POST"])
 def index():
 	if request.method == "GET":
@@ -30,6 +32,27 @@ def placeDetails(placename):
 	return render_template('placedetails.html', placename=placename)
 	
 
-@app.route('/login', methods=["GET", "POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
-	return render_template('login.html')
+  if 'email' in session:
+    return redirect(url_for('search', name=session.get('name')))
+
+  form = LoginForm()
+
+  if request.method == "POST":
+    if form.validate() == False:
+      return render_template("login.html", form=form)
+    else:
+      email = form.email.data 
+      password = form.password.data 
+
+      user = User.query.filter_by(email=email).first()
+      if user is not None and user.check_password(password):
+        session['email'] = form.email.data
+        session['name'] = user.firstname
+        return redirect(url_for('search', name=session.get('name')))
+      else:
+        return redirect(url_for('login'))
+
+  elif request.method == 'GET':
+    return render_template('login.html', form=form)

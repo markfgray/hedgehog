@@ -1,0 +1,22 @@
+<main class="container signup-section">
+    <div class="section">
+      <h2>Log in</h2>
+
+      <form method="POST" action="/login">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+          {{ form.email.label(class='form-label') }}
+          {{ form.email(class='form-entry-field') }}
+        </div>
+
+        <div class="form-group">
+          {{ form.password.label(class='form-label') }}
+          {{ form.password(class='form-entry-field') }}
+        </div>
+
+        {{ form.submit(class="btn signup-btn") }}
+
+      </form>
+    </div>
+  </main>
