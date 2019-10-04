@@ -36,7 +36,7 @@ def placeDetails(placename):
 @app.route("/login", methods=["GET", "POST"])
 def login():
   if 'email' in session:
-    return redirect(url_for('search', name=session.get('name')))
+    return redirect(url_for('index', name=session.get('name')))
 
   form = LoginForm()
 

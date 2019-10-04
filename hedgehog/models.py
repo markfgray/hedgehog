@@ -1,4 +1,5 @@
 from hedgehog import db
+from werkzeug import generate_password_hash, check_password_hash
 
 class RegisterInterest(db.Model):
     __tablename__ = 'registerinterest'
@@ -69,10 +70,10 @@ class User(db.Model):
     first_name = db.Column(db.String())
     last_name = db.Column(db.String())
 
-    def __init__(self, email, username, pwdhash, created_on, last_login, first_name, last_name):
+    def __init__(self, email, username, password, created_on, last_login, first_name, last_name):
         self.email = email
         self.username = username
-        self.pwdhash = pwdhash
+        self.set_password(password)
         self.created_on = created_on
         self.last_login = last_login
         self.first_name = first_name
@@ -80,5 +81,11 @@ class User(db.Model):
 
     def __repr__(self):
         return '<id {}>'.format(self.id)
+
+    def set_password(self, password):
+        self.pwdhash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.pwdhash, password)
     
 

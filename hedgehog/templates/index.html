@@ -21,8 +21,13 @@
 
 	<img id="logo" src="../static/img/HEDGEHOG.png" alt="Hedgehog Logo">
 	<div id="tagline">Ratings and Reviews You Can Trust</div>
-	<a class="btn login" href="/login">Login</a>
-	<a class="btn signup" href="/signup">Signup</a>
+	{% if name %}
+          <h3>Welcome {{name}}</h3>
+    {% else %}
+    	  <a class="btn login" href="/login">Login</a>
+		  <a class="btn signup" href="/signup">Signup</a>
+    {% endif %}
+	
 	<div class="search-form-container">
 		<form method="POST" action="/">
 	        {{ form.hidden_tag() }}
