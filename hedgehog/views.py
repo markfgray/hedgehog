@@ -1,6 +1,7 @@
 from hedgehog import app, db
 from flask import render_template, request, url_for, redirect, session
-from .forms import SearchForm, LoginForm
+import datetime
+from .forms import SearchForm, LoginForm, SignupForm
 from .search import query
 from .review import placesNearMe
 from .models import User
@@ -56,3 +57,25 @@ def login():
 
   elif request.method == 'GET':
     return render_template('login.html', form=form)
+ 
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+  if 'email' in session:
+    return redirect(url_for('index', name=session.get('name')))
+
+  form = SignupForm()
+
+  if request.method == "POST":
+    if form.validate() == False:
+      return render_template('signup.html', form=form)
+    else:
+      newuser = User(form.email.data, form.username.data, form.password.data, datetime.datetime.now(), datetime.datetime.now(), form.first_name.data, form.last_name.data)
+      db.session.add(newuser)
+      db.session.commit()
+
+      session['email'] = newuser.email
+      session['name'] = newuser.first_name
+      return redirect(url_for('index', name=session.get('name')))
+
+  elif request.method == "GET":
+    return render_template('signup.html', form=form)

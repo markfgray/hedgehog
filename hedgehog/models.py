@@ -62,11 +62,21 @@ class User(db.Model):
 
     user_id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String())
+    username = db.Column(db.String())
     pwdhash = db.Column(db.String())
+    created_on = db.Column(db.String())
+    last_login = db.Column(db.String())
+    first_name = db.Column(db.String())
+    last_name = db.Column(db.String())
 
-    def __init__(self, email, pwdhash):
+    def __init__(self, email, username, pwdhash, created_on, last_login, first_name, last_name):
         self.email = email
+        self.username = username
         self.pwdhash = pwdhash
+        self.created_on = created_on
+        self.last_login = last_login
+        self.first_name = first_name
+        self.last_name = last_name
 
     def __repr__(self):
         return '<id {}>'.format(self.id)
