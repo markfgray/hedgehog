@@ -23,6 +23,7 @@
 	<div id="tagline">Ratings and Reviews You Can Trust</div>
 	{% if name %}
           <h3>Welcome {{name}}</h3>
+		  <a class="btn logout" href="/logout">Logout</a>
     {% else %}
     	  <a class="btn login" href="/login">Login</a>
 		  <a class="btn signup" href="/signup">Signup</a>
@@ -38,7 +39,7 @@
 	        
 
 	        {{ form.submit(class="btn search", id="submit") }}
-	        <a class="btn leave-review" href="/localplaces">Leave a Review</a>
+	        <a class="btn leave-review" href="/leaveReview">Leave a Review</a>
 		</form>
 	</div>
 	</body>

@@ -20,43 +20,45 @@ class RegisterInterest(db.Model):
         }
 
 class Place(db.Model):
-    __tablename__ = 'places'
+    __tablename__ = 'establishments'
 
-    id = db.Column(db.Integer, primary_key=True)
-    placetype = db.Column(db.String())
-    placename = db.Column(db.String())
+    eid = db.Column(db.Integer, primary_key=True)
+    establishment_type = db.Column(db.String())
+    name = db.Column(db.String())
+    latitude = db.Column(db.Numeric())
+    longitude = db.Column(db.Numeric())
+    facilities = db.Column(db.String())
 
-    def __init__(self, email, placetype, placename):
-        self.email = email
-        self.placetype = placetype
-        self.placename = placename
+    def __init__(self, establishment_type, name, latitude, longitude, facilities):
+        self.establishment_type = establishment_type
+        self.name = name
+        self.latitude = latitude
+        self.longitude = longitude
+        self.facilities = facilities
 
     def __repr__(self):
-        return '<id {}>'.format(self.id)
-    
-    def serialize(self):
-        return {
-            'id': self.id, 
-            'placetype': self.placetype,
-            'placename': self.placename
-        }
+        return '<eid {}>'.format(self.eid)
 
 class Rating(db.Model):
     __tablename__ = 'ratings'
 
-    id = db.Column(db.Integer, primary_key=True)
-    placename = db.Column(db.String())
-    rater = db.Column(db.String())
-    rating = db.Column(db.Integer)
+    rid = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.String())
-    comment = db.Column(db.String())
+    rater = db.Column(db.String())
+    placename = db.Column(db.String())
+    rating = db.Column(db.Integer)
+    pros = db.Column(db.String())
+    cons = db.Column(db.String())
+    eid = db.Column(db.Integer)
 
-    def __init__(self, placename, rater, rating, date, comment):
-        self.placename = placename
+    def __init__(self, date, rater, placename, rating, pros, cons, eid):
+        self.date = date
         self.rater = rater
         self.rating = rating
-        self.date = date
-        self.comment = comment
+        self.placename = placename
+        self.pros = pros
+        self.cons = cons
+        self.eid = eid
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -80,7 +82,7 @@ class User(db.Model):
         self.last_name = last_name
 
     def __repr__(self):
-        return '<id {}>'.format(self.id)
+        return '<id {}>'.format(self.user_id)
 
     def set_password(self, password):
         self.pwdhash = generate_password_hash(password)
