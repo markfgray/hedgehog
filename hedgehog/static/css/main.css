@@ -172,8 +172,7 @@ html {
     font-size: 20px;
 }
 
-.new-place-form {
-    display: none;
+.new-place-form
     width:80%;
     margin-left: 10%;
     height:80%;

@@ -28,13 +28,15 @@ class Place(db.Model):
     latitude = db.Column(db.Numeric())
     longitude = db.Column(db.Numeric())
     facilities = db.Column(db.String())
+    location = db.Column(db.String())
 
-    def __init__(self, establishment_type, name, latitude, longitude, facilities):
+    def __init__(self, establishment_type, name, latitude, longitude, facilities, location):
         self.establishment_type = establishment_type
         self.name = name
         self.latitude = latitude
         self.longitude = longitude
         self.facilities = facilities
+        self.location = location
 
     def __repr__(self):
         return '<eid {}>'.format(self.eid)

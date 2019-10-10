@@ -1,26 +1,38 @@
-import requests, json
-from hedgehog import api_key
+from .models import Place, Rating
+
+def getDetails(placename):
+	establishment = Place.query.filter_by(name=placename).first()
+	all_ratings = Rating.query.filter_by(eid=establishment.eid).all()
+	details = {}
+	details['location'] = establishment.location
+	details['number of ratings'] = getTotalRatings(all_ratings)
+	details['average score'] = getAvgScore(all_ratings)
+	print(details)
+	return details
+
+def getTotalRatings(ratings):
+	return len(ratings)
+
+def getPositiveComments(ratings):
+	comments = []
+	for rating in ratings:
+		comments.append(rating.pros)
+	return comments
+
+def getNegativeComments(ratings):
+	comments = []
+	for rating in ratings:
+		comments.append(rating.cons)
+	return comments
+
+def getAvgScore(ratings):
+	total = 0
+	scores = []
+	for rating in ratings:
+		total += rating.rating
+	return total
 
 
 
-url = "https://maps.googleapis.com/maps/api/place/textsearch/json?"
-details_url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid='
 
-def query(search_term):
-	r = requests.get(url + 'query=' + search_term +
-                        '&key=' + api_key)
-	x = r.json()
-	y = x['results']
-	results = []
-	for result in y:
-		place_id = result['place_id']
-		a = requests.get(details_url + place_id + '&fields=rating&key=' + api_key)
-		b = a.json()
-		google_rating = b['result']['rating']
-		rating = truscore(google_rating)
-		results.append({'name': result['name'], 'type': result['types'], 'rating': str(rating)})
-	return results
 
-def truscore(rating):
-	multiplied_rounded_rating = round(rating * 20)
-	return multiplied_rounded_rating

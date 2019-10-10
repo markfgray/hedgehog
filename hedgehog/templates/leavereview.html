@@ -17,7 +17,7 @@
 
 		<h2>Leave a review of a place you have visited</h2>
 
-		<form method="POST" action="/">
+		<form method="POST" action="/leaveReview">
 			{{ search_form.hidden_tag() }}
 
 			{{ search_form.search(class='form-entry-field') }}
@@ -29,43 +29,15 @@
 			{% if local_places %}
 
 			{% for result in local_places %}
-				<div class="result" id="{{local_places['name']}}">
-					<div class="place-name"> {{result['name']}}</div>
-				</div>	
+				<a href="/reviewpage/{{result['name']}}">
+					<div class="result" id="{{result['name']}}">
+						<div class="place-name"> {{result['name']}}</div>
+					</div>
+				</a>	
 			{% endfor %}
 
 			{% endif %}
 		</div>
-		<div class="add-place-container">
-			<h2>Can't find the place you want to rate?</h2>
-			 <a class="btn new-place">Add new place</a>
-		</div>
 
-		<div class="new-place-form">
-			<form method="POST" action="/leaveReview">
-				{{ form.hidden_tag() }}
-
-				<div class="form-group">
-				  {{ form.place.label(class='form-label') }}
-				  {{ form.place(class='form-entry-field') }}
-				</div>
-
-				<div class="form-group">
-				  {{ form.rating.label(class='form-label') }}
-				  {{ form.rating(class='form-entry-field') }}
-				</div>
-				<div class="form-group">
-				  {{ form.best_bits.label(class='form-label') }}
-				  {{ form.best_bits(class='form-entry-field') }}
-				</div>
-				<div class="form-group">
-				  {{ form.worst_bits.label(class='form-label') }}
-				  {{ form.worst_bits(class='form-entry-field') }}
-				</div>
-
-				{{ form.submit(class="btn submit") }}
-
-			</form>
-		</div>
 	</body>
 </html>

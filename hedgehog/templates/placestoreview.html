@@ -26,15 +26,11 @@
 	{% if results %}
 
 	{% for result in results %}
-		<a href="/details/{{result['name']}}">
+		<a href="/reviewpage/{{result['name']}}">
 			<div class="result" id="{{result['name']}}">
 				<div class="place-name"> {{result['name']}}</div>
 				<div class="place-location"> {{result['location']}}</div>
-				<div class="ratings-box">
-					<div class="place-score">5</div>
-					<div class="place-number-of-votes">10 ratings</div>
-				</div>
-			</div>	
+			</div>
 		</a>
 	{% endfor %}
 

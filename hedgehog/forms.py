@@ -25,6 +25,7 @@ class SignupForm(Form):
 
 class ReviewForm(Form):
 	place = StringField('Place Name', validators=[DataRequired("Please enter the name of the place you would like to review")])
+	location = StringField('Place location', validators=[DataRequired("Please enter the location of this place")])
 	rating = SelectMultipleField('Rating', choices=[('1', 'Awful'), ('2', 'Bad'), ('3', 'OK'), ('4', 'Good'), ('5', 'Amazing')])
 	best_bits = TextAreaField('What did you like', validators=[Length(max=160)])
 	worst_bits = TextAreaField('What did you not like', validators=[Length(max=160)])

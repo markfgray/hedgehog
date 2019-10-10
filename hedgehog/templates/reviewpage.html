@@ -18,19 +18,29 @@
 		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<!-- End Google Tag Manager (noscript) -->
 
-	<img id="logo" src="../static/img/HEDGEHOG.png" alt="Hedgehog Logo">
-	<div id="tagline">Ratings and Reviews You Can Trust</div>
-	<div class="results-container">
-		<h1>Choose a place to review</h1>
-		{% if results %}
+		<img id="logo" src="../static/img/HEDGEHOG.png" alt="Hedgehog Logo">
+		<div id="tagline">Ratings and Reviews You Can Trust</div>
+		<h1>Please Leave a Review of {{placename}}</h1>
+		<div class="new-place-form">
+		<form method="POST" action="/leaveReview">
+			{{ form.hidden_tag() }}
 
-		{% for result in results %}
-			<div class="result" id="{{result['name']}}">
-				<div class="place-name"> {{result['name']}}</div>
-			</div>	
-		{% endfor %}
+			<div class="form-group">
+			  {{ form.rating.label(class='form-label') }}
+			  {{ form.rating(class='form-entry-field') }}
+			</div>
+			<div class="form-group">
+			  {{ form.best_bits.label(class='form-label') }}
+			  {{ form.best_bits(class='form-entry-field') }}
+			</div>
+			<div class="form-group">
+			  {{ form.worst_bits.label(class='form-label') }}
+			  {{ form.worst_bits(class='form-entry-field') }}
+			</div>
 
-		{% endif %}
-	</div>
+			{{ form.submit(class="btn submit") }}
+
+		</form>
+		</div>
 	</body>
 </html>

@@ -1,70 +1,94 @@
-<main class="container signup-section">
-  <div class="section signup">
-    <h2>Create an account</h2>
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TLQWZ6T');</script>
+    <!-- End Google Tag Manager -->
+    <title>Hedgehog</title>
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" >
+    <meta http-equiv="Cache-Control" content="no-cache"/>
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TLQWZ6T"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
-    <form method="POST" action="/signup">
-      {{ form.hidden_tag() }}
+    <img id="logo" src="../static/img/HEDGEHOG.png" alt="Hedgehog Logo">
+    <div id="tagline">Ratings and Reviews You Can Trust</div>
+    <main class="container signup-section">
+      <div class="section">
+        <h2>Create an account</h2>
 
-      <div class="form-group">
-        {{ form.first_name.label(class='form-label')}}
+        <form method="POST" action="/signup">
+          {{ form.hidden_tag() }}
 
-        {% if form.first_name.errors %}
-          {% for error in form.first_name.errors %}
-            <p class="error-message">{{ error }}</p>
-          {% endfor %}
-        {% endif %}
+          <div class="form-group">
+            {{ form.first_name.label(class='form-label')}}
 
-        {{ form.first_name(class='form-entry-field')}}
+            {% if form.first_name.errors %}
+              {% for error in form.first_name.errors %}
+                <p class="error-message">{{ error }}</p>
+              {% endfor %}
+            {% endif %}
+
+            {{ form.first_name(class='form-entry-field')}}
+          </div>
+
+          <div class="form-group">
+            {{ form.last_name.label(class='form-label')}}
+
+            {% if form.last_name.errors %}
+              {% for error in form.last_name.errors %}
+                <p class="error-message">{{ error }}</p>
+              {% endfor %}
+            {% endif %}
+
+            {{ form.last_name(class='form-entry-field')}}
+          </div>
+
+          <div class="form-group">
+            {{ form.email.label(class='form-label')}}
+
+            {% if form.email.errors %}
+              {% for error in form.email.errors %}
+                <p class="error-message">{{ error }}</p>
+              {% endfor %}
+            {% endif %}
+
+            {{ form.email(class='form-entry-field')}}
+          </div>
+          <div class="form-group">
+            {{ form.username.label(class='form-label')}}
+
+            {% if form.username.errors %}
+              {% for error in form.username.errors %}
+                <p class="error-message">{{ error }}</p>
+              {% endfor %}
+            {% endif %}
+
+            {{ form.username(class='form-entry-field')}}
+          </div>
+
+          <div class="form-group">
+            {{ form.password.label(class='form-label')}}
+
+            {% if form.password.errors %}
+              {% for error in form.password.errors %}
+                <p class="error-message">{{ error }}</p>
+              {% endfor %}
+            {% endif %}
+
+            {{ form.password(class='form-entry-field') }}
+          </div>
+
+          {{ form.submit(class="btn signup-btn") }}
+        </form>
       </div>
-
-      <div class="form-group">
-        {{ form.last_name.label(class='form-label')}}
-
-        {% if form.last_name.errors %}
-          {% for error in form.last_name.errors %}
-            <p class="error-message">{{ error }}</p>
-          {% endfor %}
-        {% endif %}
-
-        {{ form.last_name(class='form-entry-field')}}
-      </div>
-
-      <div class="form-group">
-        {{ form.email.label(class='form-label')}}
-
-        {% if form.email.errors %}
-          {% for error in form.email.errors %}
-            <p class="error-message">{{ error }}</p>
-          {% endfor %}
-        {% endif %}
-
-        {{ form.email(class='form-entry-field')}}
-      </div>
-      <div class="form-group">
-        {{ form.username.label(class='form-label')}}
-
-        {% if form.username.errors %}
-          {% for error in form.username.errors %}
-            <p class="error-message">{{ error }}</p>
-          {% endfor %}
-        {% endif %}
-
-        {{ form.username(class='form-entry-field')}}
-      </div>
-
-      <div class="form-group">
-        {{ form.password.label(class='form-label')}}
-
-        {% if form.password.errors %}
-          {% for error in form.password.errors %}
-            <p class="error-message">{{ error }}</p>
-          {% endfor %}
-        {% endif %}
-
-        {{ form.password(class='form-entry-field') }}
-      </div>
-
-      {{ form.submit(class="btn signup-btn") }}
-    </form>
-  </div>
-</main>
+    </main>
+  </body>
+</html>

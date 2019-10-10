@@ -2,8 +2,8 @@ from hedgehog import app, db
 from flask import render_template, request, url_for, redirect, session
 import datetime
 from .forms import SearchForm, LoginForm, SignupForm, ReviewForm
-from .search import query
 from .review import placesNearMe
+from .search import getDetails
 from .models import User, Rating, Place
 
 @app.route('/', methods=["GET", "POST"])
@@ -17,20 +17,54 @@ def index():
 
 @app.route('/search', methods=["GET"])
 def search(search_term):
-	results = query(search_term)
-	return render_template('results.html', results=results, search_term=search_term)
+	form = ReviewForm()
+	a = '%'+search_term+'%'
+	r = Place.query.filter(Place.name.like(a)).all()
+	results = []
+	for place in r:
+		results.append({'name': place.name, 'location': place.location})
+	return render_template('results.html', results=results, search_term=search_term, form=form)
 
-@app.route('/localplaces', methods=["GET", "POST"])
-def localPlaces():
+@app.route('/findPlaces', methods=["GET"])
+def findPlaces(search_term):
+	form = ReviewForm()
+	a = '%'+search_term+'%'
+	r = Place.query.filter(Place.name.like(a)).all()
+	results = []
+	for place in r:
+		results.append({'name': place.name, 'location': place.location})
+	return render_template('placestoreview.html', results=results, search_term=search_term, form=form)
+
+
+@app.route('/reviewpage/<placename>', methods=["GET", "POST"])
+def postReview(placename):
 	if request.method == "GET":
-		results = placesNearMe()
-		return render_template('localplaces.html', results=results)
+		form = ReviewForm()
+		return render_template('reviewpage.html', placename=placename, form=form)
 	else:
-		return render_template('leavereview.html')
+		formatted_name = placename[1:-1]
+		establishment = Place.query.filter_by(name=formatted_name).first()
+		form = request.form
+		date = datetime.date.today()
+		if session.get('user_id'):
+			rater = session.get('user_id')
+		else: rater = 0
+		name = formatted_name
+		best_bits = form['best_bits']	
+		worst_bits = form['worst_bits']
+		rating = int(form['rating'])
+		eid = establishment.eid
+		new_rating = Rating(date, rater, name, rating, best_bits, worst_bits, eid)
+		db.session.add(new_rating)
+		db.session.commit()
+		return redirect(url_for('index', name=session.get('name')))
 
-@app.route('/placedetails/<placename>', methods=["GET", "POST"])
+@app.route('/details/<placename>', methods=["GET","POST"])
 def placeDetails(placename):
-	return render_template('placedetails.html', placename=placename)
+	if request.method == "GET":
+		details = getDetails(placename)
+		return render_template("placedetails.html", placename=placename, details=details)
+
 	
 
 @app.route("/login", methods=["GET", "POST"])
@@ -84,36 +118,18 @@ def signup():
 @app.route("/leaveReview", methods=["GET", "POST"])
 def leaveReview():
 
-	form = ReviewForm()
 	search_form = SearchForm()
 	local_places = placesNearMe()
 
 	if request.method == "GET":
-		return render_template("leavereview.html", form=form, search_form=search_form, local_places=local_places)
+		return render_template("leavereview.html", search_form=search_form, local_places=local_places)
 	else:
-		if session.get('user_id'):
-			rater = session.get('user_id')
-		else: rater = "guest"
-		rating = int(form.rating.data[0])
-		date = datetime.date.today()
-		name = form.place.data
-		if Place.query.filter_by(name=name).first() != None:
-			establishment = Place.query.filter_by(name=name).first()
-			eid = establishment.eid
-		else:
-			newPlace = Place("Pub", name, 0.1, 0.2, "Real Ale")
-			db.session.add(newPlace)
-			db.session.commit()
-			establishment = Place.query.filter_by(name=name).first()
-			eid = establishment.eid
-		print("eid =", eid)
-		new_rating = Rating(date, rater, name, rating, form.best_bits.data, form.worst_bits.data, eid)
-		db.session.add(new_rating)
-		db.session.commit()
-		return redirect(url_for('index', name=session.get('name')))
+		search_term = request.form['search']
+		return findPlaces(search_term)
 
 @app.route("/logout")
 def logout():
   session.pop('email', None)
+  session.pop('user_id', None)
   session.pop('name', None)
   return redirect(url_for('index'))

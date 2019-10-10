@@ -29,13 +29,14 @@ def allPlacesNearMeAccordingToGoogle():
 def placesNearMe():
 	raw_ipdata = requests.post(geo_api_url+api_key)
 	ipdata = raw_ipdata.json()
-	lat = str(ipdata["location"]['lat'])
-	longi = str(ipdata["location"]['lng'])
-	location = lat + ", " + longi
-	#51.6513792, -0.3907584
-	all_places = Place.query.all()
+	lat = ipdata["location"]['lat']
+	longi = ipdata["location"]['lng']
+	location = str(lat) + ", " + str(longi)
+	closeness = 0.02
+	close_places = Place.query.filter(Place.latitude.between(lat-closeness, lat+closeness)). \
+					filter(Place.longitude.between(longi-closeness, lat-closeness)).all() 
 	results = []
-	for place in all_places:
+	for place in close_places:
 		results.append({'eid':place.eid, 'name':place.name})
 	return results
 	
