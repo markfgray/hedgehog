@@ -19,11 +19,20 @@ html {
     padding-top: 75px;
 }
 
+.nav-container {
+    float: right;
+    width: 20%;
+    height: 60px;
+    background-color: beige;
+    position: relative;
+    bottom: 95px;
+}
+
 .search-form-container {
     width: 50%;
     height: 300px;
     position: relative;
-    top: 50px;
+    top: 75px;
     margin-left: 25%;
     border: 2px solid black;
     background-color: whitesmoke;
@@ -58,29 +67,27 @@ html {
 }
 
 .login {
-    position: relative;
-    top: 45px;
+    float: left;
     background-color: blueviolet;
     text-decoration: none;
     color: black;
-    width: 68%;
+    width: 47%;
     height: 40px;
     margin-top: 10px;
-    margin-left: 47%;
-    font-size: 35px;
+    margin-left: 2%;
+    font-size: 22px;
 }
 
 .signup {
-    position: relative;
-    top: 45px;
+    float: left;
     background-color: blueviolet;
     text-decoration: none;
     color: black;
-    width: 68%;
+    width: 47%;
     height: 40px;
     margin-top: 10px;
-    margin-left: 47%;
-    font-size: 35px;
+    margin-left: 2%;
+    font-size: 22px;
 }
 
 .btn:hover {
@@ -163,6 +170,21 @@ html {
     text-align: center;
     margin-left: 20%;
     font-size: 20px;
+}
+
+.new-place-form {
+    display: none;
+    width:80%;
+    margin-left: 10%;
+    height:80%;
+    margin-top: 10%;
+}
+
+.add-place-container {
+    width:100%;
+    background-color: beige;
+    position: fixed;
+    bottom:0px;
 }
 
 @media (max-width: 810px) {

@@ -1,27 +1,71 @@
-<h1> form for leaving the review</h1>
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- Google Tag Manager -->
+		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-TLQWZ6T');</script>
+		<!-- End Google Tag Manager -->
+		<title>Hedgehog</title>
+		<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" >
+		<meta http-equiv="Cache-Control" content="no-cache"/>
+		<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="07cb2432-1f30-40c7-8cf5-b8e17220da9a" type="text/javascript" async></script>
+	</head>
+	<body>
 
-<form method="POST" action="/leaveReview">
-        {{ form.hidden_tag() }}
+		<h2>Leave a review of a place you have visited</h2>
 
-        <div class="form-group">
-          {{ form.place.label(class='form-label') }}
-          {{ form.place(class='form-entry-field') }}
-        </div>
+		<form method="POST" action="/">
+			{{ search_form.hidden_tag() }}
 
-        <div class="form-group">
-          {{ form.rating.label(class='form-label') }}
-          {{ form.rating(class='form-entry-field') }}
-        </div>
-        <div class="form-group">
-          {{ form.best_bits.label(class='form-label') }}
-          {{ form.best_bits(class='form-entry-field') }}
-        </div>
-        <div class="form-group">
-          {{ form.worst_bits.label(class='form-label') }}
-          {{ form.worst_bits(class='form-entry-field') }}
-        </div>
+			{{ search_form.search(class='form-entry-field') }}
 
-        {{ form.submit(class="btn submit") }}
+			{{ search_form.submit(class="btn search", id="submit") }}
+		</form>
+		<div class="results-container">
+			<h3>Places Nearby</h3>
+			{% if local_places %}
 
-      </form>
-    </div>
+			{% for result in local_places %}
+				<div class="result" id="{{local_places['name']}}">
+					<div class="place-name"> {{result['name']}}</div>
+				</div>	
+			{% endfor %}
+
+			{% endif %}
+		</div>
+		<div class="add-place-container">
+			<h2>Can't find the place you want to rate?</h2>
+			 <a class="btn new-place">Add new place</a>
+		</div>
+
+		<div class="new-place-form">
+			<form method="POST" action="/leaveReview">
+				{{ form.hidden_tag() }}
+
+				<div class="form-group">
+				  {{ form.place.label(class='form-label') }}
+				  {{ form.place(class='form-entry-field') }}
+				</div>
+
+				<div class="form-group">
+				  {{ form.rating.label(class='form-label') }}
+				  {{ form.rating(class='form-entry-field') }}
+				</div>
+				<div class="form-group">
+				  {{ form.best_bits.label(class='form-label') }}
+				  {{ form.best_bits(class='form-entry-field') }}
+				</div>
+				<div class="form-group">
+				  {{ form.worst_bits.label(class='form-label') }}
+				  {{ form.worst_bits(class='form-entry-field') }}
+				</div>
+
+				{{ form.submit(class="btn submit") }}
+
+			</form>
+		</div>
+	</body>
+</html>

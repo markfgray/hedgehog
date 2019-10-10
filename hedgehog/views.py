@@ -85,9 +85,11 @@ def signup():
 def leaveReview():
 
 	form = ReviewForm()
+	search_form = SearchForm()
+	local_places = placesNearMe()
 
 	if request.method == "GET":
-		return render_template("leavereview.html", form=form)
+		return render_template("leavereview.html", form=form, search_form=search_form, local_places=local_places)
 	else:
 		if session.get('user_id'):
 			rater = session.get('user_id')
