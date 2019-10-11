@@ -14,6 +14,23 @@
 		<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="07cb2432-1f30-40c7-8cf5-b8e17220da9a" type="text/javascript" async></script>
 	</head>
 	<body>
+		<!-- Google Tag Manager (noscript) -->
+		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TLQWZ6T"
+		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<!-- End Google Tag Manager (noscript) -->
+
+		<img id="logo" src="../static/img/HEDGEHOG.png" alt="Hedgehog Logo">
+		<div id="tagline">Ratings and Reviews You Can Trust</div>
+		<div class="nav-container">
+			<a class="btn home" href="/">Home</a>
+		{% if name %}
+	          <div class="btn profile">{{name}}</div>
+			  <div class="btn logout" href="/logout">Logout</div>
+	    {% else %}
+	    	  <a class="btn login" href="/login">Login</a>
+			  <a class="btn signup" href="/signup">Signup</a>
+	    {% endif %}
+		</div>
 
 		<h2>Leave a review of a place you have visited</h2>
 

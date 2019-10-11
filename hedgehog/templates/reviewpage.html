@@ -22,7 +22,7 @@
 		<div id="tagline">Ratings and Reviews You Can Trust</div>
 		<h1>Please Leave a Review of {{placename}}</h1>
 		<div class="new-place-form">
-		<form method="POST" action="/leaveReview">
+		<form method="POST" action="/reviewpage/{{placename}}">
 			{{ form.hidden_tag() }}
 
 			<div class="form-group">

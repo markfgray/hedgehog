@@ -42,19 +42,18 @@ def postReview(placename):
 		form = ReviewForm()
 		return render_template('reviewpage.html', placename=placename, form=form)
 	else:
-		formatted_name = placename[1:-1]
-		establishment = Place.query.filter_by(name=formatted_name).first()
+		establishment = Place.query.filter_by(name=placename).first()
+		print("est: ", establishment)
 		form = request.form
 		date = datetime.date.today()
 		if session.get('user_id'):
 			rater = session.get('user_id')
 		else: rater = 0
-		name = formatted_name
 		best_bits = form['best_bits']	
 		worst_bits = form['worst_bits']
 		rating = int(form['rating'])
 		eid = establishment.eid
-		new_rating = Rating(date, rater, name, rating, best_bits, worst_bits, eid)
+		new_rating = Rating(date, rater, placename, rating, best_bits, worst_bits, eid)
 		db.session.add(new_rating)
 		db.session.commit()
 		return redirect(url_for('index', name=session.get('name')))
@@ -124,8 +123,10 @@ def leaveReview():
 	if request.method == "GET":
 		return render_template("leavereview.html", search_form=search_form, local_places=local_places)
 	else:
+		print(request.form)
 		search_term = request.form['search']
 		return findPlaces(search_term)
+
 
 @app.route("/logout")
 def logout():
