@@ -24,8 +24,8 @@
 	<div class="nav-container">
 		<a class="btn home" href="/">Home</a>
 	{% if name %}
-          <div class="btn profile">{{name}}</div>
-		  <div class="btn logout" href="/logout">Logout</div>
+          <a class="btn profile">{{name}}</a>
+		  <a class="btn logout" href="/logout">Logout</a>
     {% else %}
     	  <a class="btn login" href="/login">Login</a>
 		  <a class="btn signup" href="/signup">Signup</a>

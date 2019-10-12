@@ -41,7 +41,7 @@
 	{% else %}
 		<h2>No results found. Leave details below</h2>
 		<div class="new-place-form">
-		<form method="POST" action="/leaveReview">
+		<form method="POST" action="/suggestNewPlace">
 			{{ form.hidden_tag() }}
 
 			<div class="form-group">
@@ -49,20 +49,12 @@
 			  {{ form.place(class='form-entry-field') }}
 			</div>
 			<div class="form-group">
+			  {{ form.place_type.label(class='form-label') }}
+			  {{ form.place_type(class='form-entry-field') }}
+			</div>
+			<div class="form-group">
 			  {{ form.location.label(class='form-label') }}
 			  {{ form.location(class='form-entry-field') }}
-			</div>
-			<div class="form-group">
-			  {{ form.rating.label(class='form-label') }}
-			  {{ form.rating(class='form-entry-field') }}
-			</div>
-			<div class="form-group">
-			  {{ form.best_bits.label(class='form-label') }}
-			  {{ form.best_bits(class='form-entry-field') }}
-			</div>
-			<div class="form-group">
-			  {{ form.worst_bits.label(class='form-label') }}
-			  {{ form.worst_bits(class='form-entry-field') }}
 			</div>
 
 			{{ form.submit(class="btn submit") }}

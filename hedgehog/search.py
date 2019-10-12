@@ -1,5 +1,9 @@
 from .models import Place, Rating
+from hedgehog import api_key
 import datetime
+import requests, json
+
+url = "https://maps.googleapis.com/maps/api/place/textsearch/json?"
 
 def getDetails(placename):
 	establishment = Place.query.filter_by(name=placename).first()
@@ -10,6 +14,22 @@ def getDetails(placename):
 	details['average rating'] = getAvgScore(all_ratings)
 	details['true score'] = calculateTrueScore(all_ratings)
 	return details
+
+def getPlaceInfo(place, place_type, location):
+	search_term = place + " " + place_type + " in " + location
+	r = requests.get(url + 'query=' + search_term +
+                        '&key=' + api_key)
+	x = r.json()
+	y = x['results']
+	result = y[0]
+	info = {}
+	info['name'] = place
+	info['location'] = location
+	info['type'] = place_type
+	info['latitude'] = result['geometry']['location']['lat']
+	info['longitude'] = result['geometry']['location']['lng']
+	return info
+
 
 def getTotalRatings(ratings):
 	return len(ratings)

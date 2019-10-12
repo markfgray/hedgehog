@@ -3,7 +3,7 @@ from flask import render_template, request, url_for, redirect, session
 import datetime
 from .forms import SearchForm, LoginForm, SignupForm, ReviewForm
 from .review import placesNearMe
-from .search import getDetails
+from .search import getDetails, getPlaceInfo
 from .models import User, Rating, Place
 
 @app.route('/', methods=["GET", "POST"])
@@ -127,6 +127,25 @@ def leaveReview():
 		search_term = request.form['search']
 		return findPlaces(search_term)
 
+@app.route("/suggestNewPlace", methods=["POST"])
+def suggestNewPlace():
+	place = request.form['place']
+	place_type = request.form['place_type']
+	location = request.form['location']
+	place_info = getPlaceInfo(place, place_type, location)
+	if place_info == "error from places api":
+		return "you made this place up!"
+	else:
+		est_type = place_info['type']
+		est_name = place_info['name']
+		est_lat = place_info['latitude']
+		est_long = place_info['longitude']
+		est_facs = "placeholder"
+		est_location = place_info['location']
+		new_place = Place(est_type, est_name, est_lat, est_long, est_facs, est_location)
+		db.session.add(new_place)
+		db.session.commit()
+		return "added to db"
 
 @app.route("/logout")
 def logout():
