@@ -22,7 +22,10 @@ def search(search_term):
 	r = Place.query.filter(Place.name.like(a)).all()
 	results = []
 	for place in r:
-		results.append({'name': place.name, 'location': place.location})
+		details = getDetails(place.name)
+		rating = details['true score']
+		no_of_ratings = details ['number of ratings']
+		results.append({'name': place.name, 'location': place.location, 'rating': rating, 'number of ratings': no_of_ratings})
 	return render_template('results.html', results=results, search_term=search_term, form=form)
 
 @app.route('/findPlaces', methods=["GET"])

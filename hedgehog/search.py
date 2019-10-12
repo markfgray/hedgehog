@@ -57,7 +57,9 @@ def getAvgScore(ratings):
 	scores = []
 	for rating in ratings:
 		total += rating.rating
-	average = total / number_of_ratings
+	if number_of_ratings > 0:
+		average = total / number_of_ratings
+	else: average = "N/A"
 	return average
 
 def calculateTrueScore(ratings):
@@ -82,10 +84,11 @@ def calculateTrueScore(ratings):
 	for i in all_ratings:
 		effective_number_of_votes +=  i['weight']
 		effective_total += i['weight'] * i['rating']
-	true_score = effective_total / effective_number_of_votes
-	print(all_ratings)
-	print("effective_total: ", effective_total)
-	print("effective_number_of_votes: ", effective_number_of_votes)
+	if len(all_ratings) > 0:
+		score = 20 * effective_total / effective_number_of_votes
+	else:
+		score = 50
+	true_score = adjustForRatingsVolume(score, len(all_ratings))
 	return true_score
 
 def calculateRaterWeight(rating):
@@ -151,6 +154,24 @@ def calculateProximityWeight(rating):
 		proximity_weighting = 50
 	else: proximity_weighting = 1
 	return proximity_weighting
+
+def adjustForRatingsVolume(score, number_of_ratings):
+	delta = abs(score - 50)
+	if number_of_ratings < 2:
+		new_delta = delta / 5
+	elif number_of_ratings < 5:
+		new_delta = delta / 3
+	elif number_of_ratings < 10:
+		new_delta = delta / 2
+	elif number_of_ratings < 25:
+		new_delta = delta / 1.5
+	else: new_delta = delta
+
+	if score < 50:
+		new_score = 50 - new_delta
+	else: new_score = 50 + new_delta
+	return int(new_score)
+
 
 
 
