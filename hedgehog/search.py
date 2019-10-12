@@ -21,14 +21,19 @@ def getPlaceInfo(place, place_type, location):
                         '&key=' + api_key)
 	x = r.json()
 	y = x['results']
-	result = y[0]
-	info = {}
-	info['name'] = place
-	info['location'] = location
-	info['type'] = place_type
-	info['latitude'] = result['geometry']['location']['lat']
-	info['longitude'] = result['geometry']['location']['lng']
-	return info
+	#need to check that the name given by the user matches the name returned by the api
+	#then take te data for that specific one
+	if len(y) > 0:
+		result = y[0]
+		info = {}
+		info['name'] = place
+		info['location'] = location
+		info['type'] = place_type
+		info['latitude'] = result['geometry']['location']['lat']
+		info['longitude'] = result['geometry']['location']['lng']
+		return info
+	else:
+		return "No results found"
 
 
 def getTotalRatings(ratings):
@@ -69,7 +74,9 @@ def calculateTrueScore(ratings):
 		else:
 			voter_weight = calculateRaterWeight(rating)
 			recency_weight = calculateRecencyWeight(rating)
-			weighting = (voter_weight + recency_weight) / 2
+			proximity_weight = calculateProximityWeight(rating)
+			print('pw: ', proximity_weight)
+			weighting = (voter_weight + recency_weight + proximity_weight) / 3
 			all_ratings.append({'rater': rating.rater, 'date': rating.date, \
 								'rating': rating.rating, 'weight':weighting})
 	for i in all_ratings:
@@ -108,8 +115,6 @@ def calculateRaterWeight(rating):
 			rater_volume_weighting = 20
 		return rater_volume_weighting 
 	
-
-
 def calculateRecencyWeight(rating):
 	today = datetime.datetime.today()
 	days_ago = today - rating.date
@@ -121,6 +126,31 @@ def calculateRecencyWeight(rating):
 	elif number_of_days < 100:
 		return 3
 	else: return 1
+
+def calculateProximityWeight(rating):
+	user_lat = rating.latitude
+	user_lng = rating.longitude
+	place = Place.query.filter_by(eid=rating.eid).first()
+	place_lat = place.latitude
+	place_lng = place.longitude
+	proximity = abs(place_lat - user_lat) + abs(place_lng - user_lng)
+	print("prox = ", proximity)
+	if proximity > 5:
+		proximity_weighting = 1
+	elif proximity > 2:
+		proximity_weighting = 3
+	elif proximity > 1:
+		proximity_weighting = 5
+	elif proximity > 0.5:
+		proximity_weighting = 10
+	elif proximity > 0.25:
+		proximity_weighting = 20
+	elif proximity > 0.1:
+		proximity_weighting = 30
+	elif proximity < 0.1:
+		proximity_weighting = 50
+	else: proximity_weighting = 1
+	return proximity_weighting
 
 
 

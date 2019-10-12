@@ -51,9 +51,11 @@ class Rating(db.Model):
     rating = db.Column(db.Integer)
     pros = db.Column(db.String())
     cons = db.Column(db.String())
-    eid = db.Column(db.Integer)
+    eid = db.Column(db.Integer) 
+    latitude = db.Column(db.Numeric())
+    longitude = db.Column(db.Numeric())
 
-    def __init__(self, date, rater, placename, rating, pros, cons, eid):
+    def __init__(self, date, rater, placename, rating, pros, cons, eid, latitude, longitude):
         self.date = date
         self.rater = rater
         self.rating = rating
@@ -61,6 +63,8 @@ class Rating(db.Model):
         self.pros = pros
         self.cons = cons
         self.eid = eid
+        self.latitude = latitude
+        self.longitude = longitude
 
 class User(db.Model):
     __tablename__ = 'users'

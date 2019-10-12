@@ -1,11 +1,17 @@
 import requests, json
-from hedgehog import api_key, app
+from hedgehog import api_key
 from flask import request
 from .models import Place
 
 
 url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
 geo_api_url = 'https://www.googleapis.com/geolocation/v1/geolocate?key='
+
+def getMyLocation():
+	raw_ipdata = requests.post(geo_api_url+api_key)
+	ipdata = raw_ipdata.json()
+	my_location = {'latitude': ipdata["location"]['lat'], 'longitude': ipdata["location"]['lng'] }
+	return my_location
 
 def allPlacesNearMeAccordingToGoogle():
 	raw_ipdata = requests.post(geo_api_url+api_key)
@@ -25,13 +31,10 @@ def allPlacesNearMeAccordingToGoogle():
 				results.append({'name': result['name'], 'type': result['types']})
 	return results
 
-
 def placesNearMe():
-	raw_ipdata = requests.post(geo_api_url+api_key)
-	ipdata = raw_ipdata.json()
-	lat = ipdata["location"]['lat']
-	longi = ipdata["location"]['lng']
-	location = str(lat) + ", " + str(longi)
+	my_location = getMyLocation()
+	lat = my_location['latitude']
+	longi = my_location['longitude']	
 	closeness = 0.02
 	close_places = Place.query.filter(Place.latitude.between(lat-closeness, lat+closeness)). \
 					filter(Place.longitude.between(longi-closeness, lat-closeness)).all() 

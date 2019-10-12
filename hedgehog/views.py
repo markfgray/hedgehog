@@ -2,7 +2,7 @@ from hedgehog import app, db
 from flask import render_template, request, url_for, redirect, session
 import datetime
 from .forms import SearchForm, LoginForm, SignupForm, ReviewForm
-from .review import placesNearMe
+from .review import placesNearMe, getMyLocation
 from .search import getDetails, getPlaceInfo
 from .models import User, Rating, Place
 
@@ -43,7 +43,7 @@ def postReview(placename):
 		return render_template('reviewpage.html', placename=placename, form=form)
 	else:
 		establishment = Place.query.filter_by(name=placename).first()
-		print("est: ", establishment)
+		my_location = getMyLocation()
 		form = request.form
 		date = datetime.date.today()
 		if session.get('user_id'):
@@ -53,7 +53,9 @@ def postReview(placename):
 		worst_bits = form['worst_bits']
 		rating = int(form['rating'])
 		eid = establishment.eid
-		new_rating = Rating(date, rater, placename, rating, best_bits, worst_bits, eid)
+		latitude = my_location['latitude']
+		longitude = my_location['longitude']
+		new_rating = Rating(date, rater, placename, rating, best_bits, worst_bits, eid, latitude, longitude)
 		db.session.add(new_rating)
 		db.session.commit()
 		return redirect(url_for('index', name=session.get('name')))
@@ -133,8 +135,8 @@ def suggestNewPlace():
 	place_type = request.form['place_type']
 	location = request.form['location']
 	place_info = getPlaceInfo(place, place_type, location)
-	if place_info == "error from places api":
-		return "you made this place up!"
+	if place_info == "No results found":
+		return render_template("placenotfound.html")
 	else:
 		est_type = place_info['type']
 		est_name = place_info['name']
@@ -145,7 +147,44 @@ def suggestNewPlace():
 		new_place = Place(est_type, est_name, est_lat, est_long, est_facs, est_location)
 		db.session.add(new_place)
 		db.session.commit()
-		return "added to db"
+		return redirect(url_for('index', name=session.get('name')))
+
+@app.route("/reviewNewPlace", methods=["POST"])
+def reviewNewPlace():
+	place = request.form['place']
+	place_type = request.form['place_type']
+	location = request.form['location']
+	place_info = getPlaceInfo(place, place_type, location)
+	if place_info == "No results found":
+		return render_template("placenotfound.html")
+	else:
+		est_type = place_info['type']
+		est_name = place_info['name']
+		est_lat = place_info['latitude']
+		est_long = place_info['longitude']
+		est_facs = "placeholder"
+		est_location = place_info['location']
+		new_place = Place(est_type, est_name, est_lat, est_long, est_facs, est_location)
+		db.session.add(new_place)
+		db.session.commit()
+		establishment = Place.query.filter_by(name=est_name).first()
+		my_location = getMyLocation()
+		form = request.form
+		date = datetime.date.today()
+		if session.get('user_id'):
+			rater = session.get('user_id')
+		else: rater = 0
+		best_bits = form['best_bits']	
+		worst_bits = form['worst_bits']
+		rating = int(form['rating'])
+		eid = establishment.eid
+		latitude = my_location['latitude']
+		longitude = my_location['longitude']
+		new_rating = Rating(date, rater, est_name, rating, best_bits, worst_bits, eid)
+		db.session.add(new_rating)
+		db.session.commit()
+		return redirect(url_for('index', name=session.get('name')))
+
 
 @app.route("/logout")
 def logout():
