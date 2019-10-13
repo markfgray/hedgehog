@@ -10,6 +10,7 @@
 		<!-- End Google Tag Manager -->
 		<title>Hedgehog</title>
 		<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" >
+		<link href="{{ url_for('static', filename='css/results.css') }}" rel="stylesheet" >
 		<meta http-equiv="Cache-Control" content="no-cache"/>
 	</head>
 	<body>
@@ -20,8 +21,18 @@
 
 	<img id="logo" src="../static/img/HEDGEHOG.png" alt="Hedgehog Logo">
 	<div id="tagline">Ratings and Reviews You Can Trust</div>
+	<div class="nav-container">
+		<a class="btn home" id="home-btn" href="/">Home</a>
+	{% if name %}
+          <a class="btn profile">{{name}}</a>
+		  <a class="btn logout" href="/logout">Logout</a>
+    {% else %}
+    	  <a class="btn login" href="/login">Login</a>
+		  <a class="btn signup" href="/signup">Signup</a>
+    {% endif %}
+	</div>
+
 	<div class="search-results">
-	<h1>Results for {{search_term}}</h1>
 
 	{% if results %}
 
@@ -29,37 +40,40 @@
 		<a href="/details/{{result['name']}}">
 			<div class="result" id="{{result['name']}}">
 				<div class="place-name"> {{result['name']}}</div>
-				<div class="place-location"> {{result['location']}}</div>
+				<div class="place-type"> {{result['type']}}</div>
+				<div class="place-location">{{result['location']}}</div>
 				<div class="ratings-box">
-					<div class="place-score">{{result['rating']}}</div>
-					<div class="place-number-of-votes">{{result['number of ratings']}}</div>
+					<div class="place-score">Score: {{result['rating']}}</div>
+					<div class="place-number-of-votes">number of ratings: {{result['number of ratings']}}</div>
 				</div>
 			</div>	
 		</a>
 	{% endfor %}
 
 	{% else %}
-		<h2>No results found. Leave details below</h2>
-		<div class="new-place-form">
-		<form method="POST" action="/suggestNewPlace">
-			{{ form.hidden_tag() }}
+		<div class="add-place-form form-container">
+			<h2>No results found. Please leave details below</h2>
+			<div class="new-place-form">
+			<form method="POST" action="/suggestNewPlace">
+				{{ form.hidden_tag() }}
 
-			<div class="form-group">
-			  {{ form.place.label(class='form-label') }}
-			  {{ form.place(class='form-entry-field') }}
-			</div>
-			<div class="form-group">
-			  {{ form.place_type.label(class='form-label') }}
-			  {{ form.place_type(class='form-entry-field') }}
-			</div>
-			<div class="form-group">
-			  {{ form.location.label(class='form-label') }}
-			  {{ form.location(class='form-entry-field') }}
-			</div>
+				<div class="form-group">
+				  {{ form.place.label(class='form-label') }}
+				  {{ form.place(class='form-entry-field') }}
+				</div>
+				<div class="form-group">
+				  {{ form.place_type.label(class='form-label') }}
+				  {{ form.place_type(class='form-select-field') }}
+				</div>
+				<div class="form-group">
+				  {{ form.location.label(class='form-label') }}
+				  {{ form.location(class='form-entry-field') }}
+				</div>
 
-			{{ form.submit(class="btn submit") }}
+				{{ form.submit(class="btn submit") }}
 
-		</form>
+			</form>
+			</div>
 		</div>
 
 	{% endif %}

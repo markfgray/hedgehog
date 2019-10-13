@@ -1,0 +1,35 @@
+
+.error-message {
+    display: block;
+    width: 30%;
+    margin-left: 35%;
+    text-align: center;
+    background-color: beige;
+    border-radius: 5px;
+    color: red;
+}
+
+#login-form {
+    width: 50%;
+    margin-left: 25%;
+    background-color: beige;
+    height:215px;
+    margin-top: 30px;
+}
+.signup-btn {    
+    width: 20%;
+    margin-top: 5px;   
+}
+
+.login-btn {
+    width: 20%;
+    margin-top: 15px;
+}
+
+.signup-form {
+	width: 60%;
+	margin-left: 20%;
+	background-color: beige;
+	border: 2px solid black;
+    border-radius: 5px;
+}

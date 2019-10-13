@@ -22,7 +22,6 @@
 	<img id="logo" src="../static/img/HEDGEHOG.png" alt="Hedgehog Logo">
 	<div id="tagline">Ratings and Reviews You Can Trust</div>
 	<div class="nav-container">
-		<a class="btn home" href="/">Home</a>
 	{% if name %}
           <a class="btn profile">{{name}}</a>
 		  <a class="btn logout" href="/logout">Logout</a>
@@ -32,11 +31,11 @@
     {% endif %}
 	</div>
 	
-	<div class="search-form-container">
+	<div class="search-form form-container">
 		<form method="POST" action="/">
 	        {{ form.hidden_tag() }}
 
-	        <p>Search for pubs</p>
+	        <p>Search for pubs, restaurants and bars</p>
 
 	        {{ form.search(class='form-entry-field') }}
 	        

@@ -2,8 +2,8 @@ from hedgehog import app, db
 from flask import render_template, request, url_for, redirect, session
 import datetime
 from .forms import SearchForm, LoginForm, SignupForm, ReviewForm
-from .review import placesNearMe, getMyLocation
-from .search import getDetails, getPlaceInfo
+from .review import postReview, getMyLocation, reviewNewPlace
+from .search import searchDB, getDetails, getPlaceInfo, placesNearMe
 from .models import User, Rating, Place
 
 @app.route('/', methods=["GET", "POST"])
@@ -18,49 +18,26 @@ def index():
 @app.route('/search', methods=["GET"])
 def search(search_term):
 	form = ReviewForm()
-	a = '%'+search_term+'%'
-	r = Place.query.filter(Place.name.like(a)).all()
-	results = []
-	for place in r:
-		details = getDetails(place.name)
-		rating = details['true score']
-		no_of_ratings = details ['number of ratings']
-		results.append({'name': place.name, 'location': place.location, 'rating': rating, 'number of ratings': no_of_ratings})
-	return render_template('results.html', results=results, search_term=search_term, form=form)
+	results = searchDB(search_term)	
+	return render_template('results.html', results=results, search_term=search_term, form=form, name=session.get('name'))
 
 @app.route('/findPlaces', methods=["GET"])
 def findPlaces(search_term):
 	form = ReviewForm()
-	a = '%'+search_term+'%'
-	r = Place.query.filter(Place.name.like(a)).all()
-	results = []
-	for place in r:
-		results.append({'name': place.name, 'location': place.location})
+	results = searchDB(search_term)	
 	return render_template('placestoreview.html', results=results, search_term=search_term, form=form)
 
 
 @app.route('/reviewpage/<placename>', methods=["GET", "POST"])
-def postReview(placename):
+def postAReview(placename):
 	if request.method == "GET":
 		form = ReviewForm()
 		return render_template('reviewpage.html', placename=placename, form=form)
 	else:
-		establishment = Place.query.filter_by(name=placename).first()
-		my_location = getMyLocation()
-		form = request.form
-		date = datetime.date.today()
 		if session.get('user_id'):
 			rater = session.get('user_id')
 		else: rater = 0
-		best_bits = form['best_bits']	
-		worst_bits = form['worst_bits']
-		rating = int(form['rating'])
-		eid = establishment.eid
-		latitude = my_location['latitude']
-		longitude = my_location['longitude']
-		new_rating = Rating(date, rater, placename, rating, best_bits, worst_bits, eid, latitude, longitude)
-		db.session.add(new_rating)
-		db.session.commit()
+		postReview(placename, request.form, rater)
 		return redirect(url_for('index', name=session.get('name')))
 
 @app.route('/details/<placename>', methods=["GET","POST"])
@@ -68,8 +45,6 @@ def placeDetails(placename):
 	if request.method == "GET":
 		details = getDetails(placename)
 		return render_template("placedetails.html", placename=placename, details=details)
-
-	
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -128,65 +103,23 @@ def leaveReview():
 	if request.method == "GET":
 		return render_template("leavereview.html", search_form=search_form, local_places=local_places)
 	else:
-		print(request.form)
 		search_term = request.form['search']
 		return findPlaces(search_term)
 
 @app.route("/suggestNewPlace", methods=["POST"])
-def suggestNewPlace():
-	place = request.form['place']
-	place_type = request.form['place_type']
-	location = request.form['location']
-	place_info = getPlaceInfo(place, place_type, location)
-	if place_info == "No results found":
-		return render_template("placenotfound.html")
-	else:
-		est_type = place_info['type']
-		est_name = place_info['name']
-		est_lat = place_info['latitude']
-		est_long = place_info['longitude']
-		est_facs = "placeholder"
-		est_location = place_info['location']
-		new_place = Place(est_type, est_name, est_lat, est_long, est_facs, est_location)
-		db.session.add(new_place)
-		db.session.commit()
+def suggestANewPlace():
+	data = request.form
+	if suggestNewPlace(data) == "Place Added":
 		return redirect(url_for('index', name=session.get('name')))
+	else: return render_template("placenotfound.html")	
 
 @app.route("/reviewNewPlace", methods=["POST"])
-def reviewNewPlace():
-	place = request.form['place']
-	place_type = request.form['place_type']
-	location = request.form['location']
-	place_info = getPlaceInfo(place, place_type, location)
-	if place_info == "No results found":
-		return render_template("placenotfound.html")
-	else:
-		est_type = place_info['type']
-		est_name = place_info['name']
-		est_lat = place_info['latitude']
-		est_long = place_info['longitude']
-		est_facs = "placeholder"
-		est_location = place_info['location']
-		new_place = Place(est_type, est_name, est_lat, est_long, est_facs, est_location)
-		db.session.add(new_place)
-		db.session.commit()
-		establishment = Place.query.filter_by(name=est_name).first()
-		my_location = getMyLocation()
-		form = request.form
-		date = datetime.date.today()
-		if session.get('user_id'):
-			rater = session.get('user_id')
-		else: rater = 0
-		best_bits = form['best_bits']	
-		worst_bits = form['worst_bits']
-		rating = int(form['rating'])
-		eid = establishment.eid
-		latitude = my_location['latitude']
-		longitude = my_location['longitude']
-		new_rating = Rating(date, rater, est_name, rating, best_bits, worst_bits, eid)
-		db.session.add(new_rating)
-		db.session.commit()
-		return redirect(url_for('index', name=session.get('name')))
+def reviewANewPlace():
+	if session.get('user_id'):
+		rater = session.get('user_id')
+	else: rater = 0
+	reviewNewPlace(request.form, rater)
+	return redirect(url_for('index', name=session.get('name')))
 
 
 @app.route("/logout")

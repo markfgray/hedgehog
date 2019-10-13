@@ -9,7 +9,8 @@
 		})(window,document,'script','dataLayer','GTM-TLQWZ6T');</script>
 		<!-- End Google Tag Manager -->
 		<title>Hedgehog</title>
-		<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" >
+		<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" >	
+		<link href="{{ url_for('static', filename='css/results.css') }}" rel="stylesheet" >
 		<meta http-equiv="Cache-Control" content="no-cache"/>
 		<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="07cb2432-1f30-40c7-8cf5-b8e17220da9a" type="text/javascript" async></script>
 	</head>
@@ -41,15 +42,17 @@
 
 			{{ search_form.submit(class="btn search", id="submit") }}
 		</form>
-		<div class="results-container">
+		<div class="local-search-results">
 			<h3>Places Nearby</h3>
 			{% if local_places %}
 
 			{% for result in local_places %}
-				<a href="/reviewpage/{{result['name']}}">
-					<div class="result" id="{{result['name']}}">
-						<div class="place-name"> {{result['name']}}</div>
-					</div>
+				<a href="/details/{{result['name']}}">
+					<div class="local-result" id="{{result['name']}}">
+						<div class="local-place-name "> {{result['name']}}</div>
+						<div class="local-place-type"> {{result['type']}}</div>
+						<div class="local-place-location">{{result['location']}}</div>
+					</div>	
 				</a>	
 			{% endfor %}
 

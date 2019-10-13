@@ -4,12 +4,38 @@ import datetime
 import requests, json
 
 url = "https://maps.googleapis.com/maps/api/place/textsearch/json?"
+geo_api_url = 'https://www.googleapis.com/geolocation/v1/geolocate?key='
+
+
+def getMyLocation():
+	raw_ipdata = requests.post(geo_api_url+api_key)
+	ipdata = raw_ipdata.json()
+	my_location = {'latitude': ipdata["location"]['lat'], 'longitude': ipdata["location"]['lng'] }
+	return my_location
+
+def searchDB(search_term):
+	"""takes a search term and looks in the hedgehog DB for matches"""
+	s = '%'+search_term+'%'
+	r = Place.query.filter(Place.name.like(s)).all()
+	results = []
+	for i in r:
+		details = getDetails(i.name)
+		rating = details['true score']
+		no_of_ratings = details['number of ratings']
+		place_type = details['type']
+		results.append({'name': i.name, \
+						'location': i.location, \
+						'type': place_type, \
+						'rating': rating, 'number of ratings': no_of_ratings})
+	return results
+	
 
 def getDetails(placename):
 	establishment = Place.query.filter_by(name=placename).first()
 	all_ratings = Rating.query.filter_by(eid=establishment.eid).all()
 	details = {}
 	details['location'] = establishment.location
+	details['type'] = establishment.establishment_type
 	details['number of ratings'] = getTotalRatings(all_ratings)
 	details['average rating'] = getAvgScore(all_ratings)
 	details['true score'] = calculateTrueScore(all_ratings)
@@ -34,6 +60,18 @@ def getPlaceInfo(place, place_type, location):
 		return info
 	else:
 		return "No results found"
+
+def placesNearMe():
+	my_location = getMyLocation()
+	lat = my_location['latitude']
+	longi = my_location['longitude']	
+	closeness = 0.02
+	close_places = Place.query.filter(Place.latitude.between(lat-closeness, lat+closeness)). \
+					filter(Place.longitude.between(longi-closeness, lat-closeness)).all() 
+	results = []
+	for place in close_places:
+		results.append({'eid':place.eid, 'name':place.name, 'location': place.location, 'type': place.establishment_type})
+	return results
 
 
 def getTotalRatings(ratings):
