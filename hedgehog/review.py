@@ -1,7 +1,7 @@
 import requests, json, datetime
 from hedgehog import api_key, db
 from flask import request
-from .models import Place
+from .models import Place, Rating
 from .search import getPlaceInfo, getMyLocation
 
 
@@ -20,7 +20,7 @@ def postReview(placename, form_data, user):
 	eid = establishment.eid
 	latitude = my_location['latitude']
 	longitude = my_location['longitude']
-	new_rating = Rating(date, rater, placename, rating, best_bits, worst_bits, eid, latitude, longitude)
+	new_rating = Rating(date, user, placename, rating, best_bits, worst_bits, eid, latitude, longitude)
 	db.session.add(new_rating)
 	db.session.commit()
 	return "added to DB"
@@ -30,9 +30,7 @@ def reviewNewPlace(form_data, user):
 	place_type = form_data['place_type']
 	location = form_data['location']
 	place_info = getPlaceInfo(place, place_type, location)
-	if place_info == "No results found":
-		return "No results found"
-	else:
+	if type(place_info) is dict:
 		est_type = place_info['type']
 		est_name = place_info['name']
 		est_lat = place_info['latitude']
@@ -52,10 +50,11 @@ def reviewNewPlace(form_data, user):
 		eid = establishment.eid
 		latitude = my_location['latitude']
 		longitude = my_location['longitude']
-		new_rating = Rating(date, rater, est_name, rating, best_bits, worst_bits, eid)
+		new_rating = Rating(date, user, est_name, rating, best_bits, worst_bits, eid, latitude, longitude)
 		db.session.add(new_rating)
 		db.session.commit()
 		return "New review added"
+	else: return "failed"
 
 
 def suggestNewPlace(form_data):
@@ -63,9 +62,7 @@ def suggestNewPlace(form_data):
 	place_type = form_data['place_type']
 	location = form_data['location']
 	place_info = getPlaceInfo(place, place_type, location)
-	if place_info == "No results found":
-		return "place not found"
-	else:
+	if type(place_info) is dict:
 		est_type = place_info['type']
 		est_name = place_info['name']
 		est_lat = place_info['latitude']
@@ -76,6 +73,8 @@ def suggestNewPlace(form_data):
 		db.session.add(new_place)
 		db.session.commit()
 		return "Place Added"
+	else:
+		return "failed"
 
 
 def allPlacesNearMeAccordingToGoogle():

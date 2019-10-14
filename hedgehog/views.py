@@ -2,7 +2,7 @@ from hedgehog import app, db
 from flask import render_template, request, url_for, redirect, session
 import datetime
 from .forms import SearchForm, LoginForm, SignupForm, ReviewForm
-from .review import postReview, getMyLocation, reviewNewPlace
+from .review import postReview, getMyLocation, reviewNewPlace, suggestNewPlace
 from .search import searchDB, getDetails, getPlaceInfo, placesNearMe
 from .models import User, Rating, Place
 

@@ -1,0 +1,15 @@
+#review-form {
+    width: 50%;
+    margin-left: 25%;
+    background-color: beige;
+    height: 420px;
+    margin-top: 30px;
+}
+
+#submit {
+	width: 20%;
+}
+
+form h2 {
+	text-align: center;
+}

@@ -2,6 +2,7 @@ from .models import Place, Rating
 from hedgehog import api_key
 import datetime
 import requests, json
+from operator import itemgetter
 
 url = "https://maps.googleapis.com/maps/api/place/textsearch/json?"
 geo_api_url = 'https://www.googleapis.com/geolocation/v1/geolocate?key='
@@ -27,7 +28,8 @@ def searchDB(search_term):
 						'location': i.location, \
 						'type': place_type, \
 						'rating': rating, 'number of ratings': no_of_ratings})
-	return results
+	sorted_results = sorted(results, key=itemgetter('rating'), reverse=True)
+	return sorted_results
 	
 
 def getDetails(placename):
@@ -49,17 +51,39 @@ def getPlaceInfo(place, place_type, location):
 	y = x['results']
 	#need to check that the name given by the user matches the name returned by the api
 	#then take te data for that specific one
-	if len(y) > 0:
-		result = y[0]
-		info = {}
-		info['name'] = place
-		info['location'] = location
-		info['type'] = place_type
-		info['latitude'] = result['geometry']['location']['lat']
-		info['longitude'] = result['geometry']['location']['lng']
-		return info
-	else:
+	if len(y) == 0:
 		return "No results found"
+	elif len(y) == 1:
+		place_search_name_words = place.split(" ")
+		lowercase_place_search_name_words = [word.lower() for word in place_search_name_words]
+		place_search_location_words = location.split(" ")
+		lowercase_place_search_location_words = [word.lower() for word in place_search_location_words]
+		name = y[0]['name']
+		result_name_words = name.split(" ")
+		lowercase_result_name_words = [word.lower() for word in result_name_words]
+		result_location = y[0]['formatted_address']
+		result_location_words = result_location.split(" ")
+		lowercase_result_location_words = [word.lower() for word in result_location_words]
+		name_match = False
+		location_match = False
+		for i in lowercase_place_search_location_words:
+			if i in (lowercase_result_location_words):
+				location_match = True
+		for j in lowercase_place_search_name_words:
+			if j in lowercase_result_name_words:
+				name_match = True
+		if name_match == True and location_match == True:
+			result = y[0]
+			info = {}
+			info['name'] = place
+			info['location'] = location
+			info['type'] = place_type
+			info['latitude'] = result['geometry']['location']['lat']
+			info['longitude'] = result['geometry']['location']['lng']
+			return info
+		else: return "No results found"
+	else: return "Multiple Results found"
+		
 
 def placesNearMe():
 	my_location = getMyLocation()

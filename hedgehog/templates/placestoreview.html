@@ -10,6 +10,7 @@
 		<!-- End Google Tag Manager -->
 		<title>Hedgehog</title>
 		<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" >
+		<link href="{{ url_for('static', filename='css/review.css') }}" rel="stylesheet" >
 		<meta http-equiv="Cache-Control" content="no-cache"/>
 	</head>
 	<body>
@@ -37,7 +38,7 @@
 
 	{% else %}
 		<h2>No results found. Leave details below</h2>
-		<div class="new-place-form">
+		<div class="section" id="new-place-form">
 		<form method="POST" action="/reviewNewPlace">
 			{{ form.hidden_tag() }}
 
