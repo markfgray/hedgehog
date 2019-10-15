@@ -17,7 +17,7 @@ def getMyLocation():
 def searchDB(search_term):
 	"""takes a search term and looks in the hedgehog DB for matches"""
 	s = '%'+search_term+'%'
-	r = Place.query.filter(Place.name.like(s)).all()
+	r = Place.query.filter(Place.name.ilike(s)).all()
 	results = []
 	for i in r:
 		details = getDetails(i.name)

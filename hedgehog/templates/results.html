@@ -21,8 +21,11 @@
 
 	<img id="logo" src="../static/img/HEDGEHOG.png" alt="Hedgehog Logo">
 	<div id="tagline">Ratings and Reviews You Can Trust</div>
+	<a class="home" href="/">
+		<img id="homeicon" src="../static/img/homeicon.svg" alt="homeicon">
+	</a>
 	<div class="nav-container">
-		<a class="btn home" id="home-btn" href="/">Home</a>
+		
 	{% if name %}
           <a class="btn profile">{{name}}</a>
 		  <a class="btn logout" href="/logout">Logout</a>

@@ -25,9 +25,7 @@ form {
     padding-top: 90px;
 }
 
-.home {
-    float: left;
-}
+
 
 .section {
     border: 2px solid black;
@@ -57,13 +55,19 @@ form {
     color: black;
 }
 
-#home-btn {
-    float:left;
-    font-size: 32px;
-    height: 50px;
-    line-height: 50px;
-    border-radius: 20px;
+.home {
+    width: 50px;
+    margin-left: 1%;
+    float: left;
+    position: relative;
+    bottom: 115px;
+    z-index: 1;
 }
+
+#homeicon {
+    width:50px;
+}
+
 .form-container {
     width: 50%;
     margin-left: 25%;
