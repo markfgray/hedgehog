@@ -2,7 +2,7 @@ import requests, json, datetime
 from hedgehog import api_key, db
 from flask import request
 from .models import Place, Rating
-from .search import getPlaceInfo, getMyLocation
+from .search import getDetailsFromDB, getMyLocation
 
 
 url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"

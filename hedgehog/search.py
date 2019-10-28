@@ -5,6 +5,8 @@ import requests, json
 from operator import itemgetter
 
 url = "https://maps.googleapis.com/maps/api/place/textsearch/json?"
+details_url = "https://maps.googleapis.com/maps/api/place/details/json?place_id="
+photo_url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="
 geo_api_url = 'https://www.googleapis.com/geolocation/v1/geolocate?key='
 
 
@@ -20,7 +22,7 @@ def searchDB(search_term):
 	r = Place.query.filter(Place.name.ilike(s)).all()
 	results = []
 	for i in r:
-		details = getDetails(i.name)
+		details = getDetailsFromDB(i.name)
 		rating = details['true score']
 		no_of_ratings = details['number of ratings']
 		place_type = details['type']
@@ -32,7 +34,7 @@ def searchDB(search_term):
 	return sorted_results
 	
 
-def getDetails(placename):
+def getDetailsFromDB(placename):
 	establishment = Place.query.filter_by(name=placename).first()
 	all_ratings = Rating.query.filter_by(eid=establishment.eid).all()
 	details = {}
@@ -43,14 +45,13 @@ def getDetails(placename):
 	details['true score'] = calculateTrueScore(all_ratings)
 	return details
 
-def getPlaceInfo(place, place_type, location):
+
+def getDetailsFromGoogle(place, place_type, location):
 	search_term = place + " " + place_type + " in " + location
 	r = requests.get(url + 'query=' + search_term +
                         '&key=' + api_key)
 	x = r.json()
 	y = x['results']
-	#need to check that the name given by the user matches the name returned by the api
-	#then take te data for that specific one
 	if len(y) == 0:
 		return "No results found"
 	elif len(y) == 1:
@@ -80,7 +81,18 @@ def getPlaceInfo(place, place_type, location):
 			info['type'] = place_type
 			info['latitude'] = result['geometry']['location']['lat']
 			info['longitude'] = result['geometry']['location']['lng']
+			info['street address'] = result['formatted_address']
+			info['place_id'] = result['place_id']
+			r = requests.get(url + 'query=' + search_term +
+                        '&key=' + api_key)
+			extra_details = requests.get(details_url + info['place_id'] + "&key=" + api_key)
+			a = extra_details.json()
+			b = a['result']
+			for k,v in b.items():
+				info[k] = v
 			return info
+			p = requests.get(photo_url + info['photos'][0]['photo_reference'] + "&key=" + api_key)
+			info['photo'] = p
 		else: return "No results found"
 	else: return "Multiple Results found"
 		
@@ -139,7 +151,6 @@ def calculateTrueScore(ratings):
 			voter_weight = calculateRaterWeight(rating)
 			recency_weight = calculateRecencyWeight(rating)
 			proximity_weight = calculateProximityWeight(rating)
-			print('pw: ', proximity_weight)
 			weighting = (voter_weight + recency_weight + proximity_weight) / 3
 			all_ratings.append({'rater': rating.rater, 'date': rating.date, \
 								'rating': rating.rating, 'weight':weighting})
@@ -199,7 +210,6 @@ def calculateProximityWeight(rating):
 	place_lat = place.latitude
 	place_lng = place.longitude
 	proximity = abs(place_lat - user_lat) + abs(place_lng - user_lng)
-	print("prox = ", proximity)
 	if proximity > 5:
 		proximity_weighting = 1
 	elif proximity > 2:

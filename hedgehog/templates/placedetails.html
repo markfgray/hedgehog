@@ -25,6 +25,11 @@
 		<h3>{{placename}} has had {{details['number of ratings']}} ratings</h3>
 		<h3>{{placename}} has an average rating of {{details['average rating']}}</h3>
 		<h3>{{placename}} has a true score of {{details['true score']}}</h3>
+		<h2>Address: {{google_details['vicinity']}}</h2>
+		<h2>Website: {{google_details['website']}}</h2>
+		<h2>Contact: {{google_details['formatted_phone_number']}}</h2>
+		<h2>Opening Hours: {{google_details['opening_hours']['weekday_text']}}</h2>
+		{{photo}}
 
 		<p>This page will show:</p>
 		<ul>

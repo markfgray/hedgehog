@@ -1,10 +1,12 @@
-from hedgehog import app, db
+from hedgehog import app, db, api_key
 from flask import render_template, request, url_for, redirect, session
-import datetime
+import datetime, requests
 from .forms import SearchForm, LoginForm, SignupForm, ReviewForm
 from .review import postReview, getMyLocation, reviewNewPlace, suggestNewPlace
-from .search import searchDB, getDetails, getPlaceInfo, placesNearMe
+from .search import searchDB, getDetailsFromDB, getDetailsFromGoogle, placesNearMe
 from .models import User, Rating, Place
+
+photo_url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="
 
 @app.route('/', methods=["GET", "POST"])
 def index():
@@ -43,8 +45,11 @@ def postAReview(placename):
 @app.route('/details/<placename>', methods=["GET","POST"])
 def placeDetails(placename):
 	if request.method == "GET":
-		details = getDetails(placename)
-		return render_template("placedetails.html", placename=placename, details=details)
+		basic_details = getDetailsFromDB(placename)
+		google_details = getDetailsFromGoogle(placename, basic_details['type'], basic_details['location'])
+		photo = requests.get(photo_url + google_details['photos'][0]['photo_reference'] + "&key=" + api_key)
+		print(google_details)
+		return render_template("placedetails.html", placename=placename, details=basic_details, google_details=google_details, photo=photo)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
