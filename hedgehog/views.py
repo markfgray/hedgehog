@@ -48,7 +48,6 @@ def placeDetails(placename):
 		basic_details = getDetailsFromDB(placename)
 		google_details = getDetailsFromGoogle(placename, basic_details['type'], basic_details['location'])
 		photo = requests.get(photo_url + google_details['photos'][0]['photo_reference'] + "&key=" + api_key)
-		print(google_details)
 		return render_template("placedetails.html", placename=placename, details=basic_details, google_details=google_details, photo=photo)
 
 @app.route("/login", methods=["GET", "POST"])

@@ -20,8 +20,8 @@
 
 		<img id="logo" src="../static/img/HEDGEHOG.png" alt="Hedgehog Logo">
 		<div id="tagline">Ratings and Reviews You Can Trust</div>
-		<h1>Details about {{placename}}</h1>
-		<h3> {{placename}} is in {{details['location']}}
+		<div class="title">{{placename}} in {{details['location']}}</div>
+		
 		<h3>{{placename}} has had {{details['number of ratings']}} ratings</h3>
 		<h3>{{placename}} has an average rating of {{details['average rating']}}</h3>
 		<h3>{{placename}} has a true score of {{details['true score']}}</h3>
@@ -31,18 +31,14 @@
 		<h2>Opening Hours: {{google_details['opening_hours']['weekday_text']}}</h2>
 		{{photo}}
 
-		<p>This page will show:</p>
+		<h1>Things to add to this page</h1>
 		<ul>
-			<li>Location</li>
-			<li>Contact Details</li>
+			<li>google maps widget</li>
 			<li>Pictures</li>
-			<li>Score</li>
 			<li>How this score was calculated</li>
 			<li>Rank amongst similar places in the vicinity</li>
 			<li>Recent Comments</li>
-			<li>Location on the Map</li>
 			<li>Ads Ads Ads</li>
-			<li>Link to their website</li>
 		</ul>
 
 	</body>

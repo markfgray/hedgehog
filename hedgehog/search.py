@@ -6,7 +6,6 @@ from operator import itemgetter
 
 url = "https://maps.googleapis.com/maps/api/place/textsearch/json?"
 details_url = "https://maps.googleapis.com/maps/api/place/details/json?place_id="
-photo_url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="
 geo_api_url = 'https://www.googleapis.com/geolocation/v1/geolocate?key='
 
 
@@ -91,8 +90,6 @@ def getDetailsFromGoogle(place, place_type, location):
 			for k,v in b.items():
 				info[k] = v
 			return info
-			p = requests.get(photo_url + info['photos'][0]['photo_reference'] + "&key=" + api_key)
-			info['photo'] = p
 		else: return "No results found"
 	else: return "Multiple Results found"
 		
