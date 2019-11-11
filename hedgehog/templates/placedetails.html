@@ -10,6 +10,7 @@
 		<!-- End Google Tag Manager -->
 		<title>Hedgehog</title>
 		<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" >
+		<link href="{{ url_for('static', filename='css/placedetails.css') }}" rel="stylesheet" >
 		<meta http-equiv="Cache-Control" content="no-cache"/>
 	</head>
 	<body>
@@ -20,22 +21,26 @@
 
 		<img id="logo" src="../static/img/HEDGEHOG.png" alt="Hedgehog Logo">
 		<div id="tagline">Ratings and Reviews You Can Trust</div>
-		<div class="title">{{placename}} in {{details['location']}}</div>
+		<div class="title-container">
+			<div class="title">{{placename}}</div>
+			<div class="subtitle">{{details['type']}} in {{details['location']}}</div>
+		</div>
+		<div class="score-container">
+			<div class="score">Rating: {{details['true score']}}</div>
+			<div class="ratings-count">{{details['number of ratings']}} ratings</div>
+			<a class="calc-info">How was this calculated?</a>
+		</div>
+		<div class="details-container">
+			<div class="address">Address: {{google_details['vicinity']}}</div>
+			<div class="website">Website: {{google_details['website']}}</div>
+			<div class="contact">Contact: {{google_details['formatted_phone_number']}}</div>
+			<div class="hours">Opening Hours: {{google_details['opening_hours']['weekday_text']}}</div>
+		</div>
 		
-		<h3>{{placename}} has had {{details['number of ratings']}} ratings</h3>
-		<h3>{{placename}} has an average rating of {{details['average rating']}}</h3>
-		<h3>{{placename}} has a true score of {{details['true score']}}</h3>
-		<h2>Address: {{google_details['vicinity']}}</h2>
-		<h2>Website: {{google_details['website']}}</h2>
-		<h2>Contact: {{google_details['formatted_phone_number']}}</h2>
-		<h2>Opening Hours: {{google_details['opening_hours']['weekday_text']}}</h2>
-		{{photo}}
-
 		<h1>Things to add to this page</h1>
 		<ul>
 			<li>google maps widget</li>
 			<li>Pictures</li>
-			<li>How this score was calculated</li>
 			<li>Rank amongst similar places in the vicinity</li>
 			<li>Recent Comments</li>
 			<li>Ads Ads Ads</li>

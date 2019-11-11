@@ -1,0 +1,45 @@
+.title-container {
+    background-color: beige;
+    height: 66px;
+    width: 90%;
+    margin-left: 5%;
+    margin-bottom: 10px;
+}
+
+.title {
+	font-size: 32px;
+}
+
+.subtitle {
+	font-size: 18px;
+}
+
+.score-container {
+    height: 120px;
+    width: 25%;
+    float: right;
+    background-color: pink;
+    margin-right: 5%;
+}
+
+.score {
+	font-size: 32px;
+	text-align: center;
+}
+
+.ratings-count {
+	font-size: 24px;
+	text-align: center;
+}
+
+.calc-info {
+	font-size: 10px;
+}
+
+.details-container {
+    height: 120px;
+    width: 64%;
+    background-color: grey;
+    float: left;
+    margin-left: 5%;
+}
