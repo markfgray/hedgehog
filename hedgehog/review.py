@@ -2,7 +2,7 @@ import requests, json, datetime
 from hedgehog import api_key, db
 from flask import request
 from .models import Place, Rating
-from .search import getDetailsFromDB, getMyLocation
+from .search import getDetailsFromDB, GoogleRequests
 
 
 url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
@@ -11,7 +11,7 @@ def postReview(placename, form_data, user):
 	"""takes a place name, form data and the user and posts to the ratings table
 	with details fo that review"""
 	establishment = Place.query.filter_by(name=placename).first()
-	my_location = getMyLocation()
+	my_location = GoogleRequests.getMyLocation()
 	form = form_data
 	date = datetime.date.today()
 	best_bits = form['best_bits']	
@@ -41,7 +41,7 @@ def reviewNewPlace(form_data, user):
 		db.session.add(new_place)
 		db.session.commit()
 		establishment = Place.query.filter_by(name=est_name).first()
-		my_location = getMyLocation()
+		my_location = GoogleRequests.getMyLocation()
 		form = form_data
 		date = datetime.date.today()
 		best_bits = form['best_bits']	

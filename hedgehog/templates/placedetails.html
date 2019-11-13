@@ -21,14 +21,17 @@
 
 		<img id="logo" src="../static/img/HEDGEHOG.png" alt="Hedgehog Logo">
 		<div id="tagline">Ratings and Reviews You Can Trust</div>
+		<a class="home" href="/">
+		<img id="homeicon" src="../static/img/homeicon.svg" alt="homeicon">
+		</a>
 		<div class="title-container">
 			<div class="title">{{placename}}</div>
 			<div class="subtitle">{{details['type']}} in {{details['location']}}</div>
 		</div>
 		<div class="score-container">
 			<div class="score">Rating: {{details['true score']}}</div>
+			<div class="calc-info">How was this calculated?</div>
 			<div class="ratings-count">{{details['number of ratings']}} ratings</div>
-			<a class="calc-info">How was this calculated?</a>
 		</div>
 		<div class="details-container">
 			<div class="address">Address: {{google_details['vicinity']}}</div>
@@ -36,7 +39,39 @@
 			<div class="contact">Contact: {{google_details['formatted_phone_number']}}</div>
 			<div class="hours">Opening Hours: {{google_details['opening_hours']['weekday_text']}}</div>
 		</div>
-		
+		<div class="comments-container">
+			<div class="pros container-box">
+				<h3>People Liked</h3>
+
+				{% if details['comments']['pros'] %}
+
+				{% for i in details['comments']['pros'] %}
+				<div class="comment">{{i}}</div>
+				{% endfor %}
+
+				{% else %}	
+
+				<h4>No Comments yet</h4>
+
+				{% endif %}		
+			</div>
+
+			<div class="cons container-box">
+				<h3>People Didn't Likey</h3>
+
+				{% if details['comments']['pros'] %}
+
+				{% for i in details['comments']['cons'] %}
+				<div class="comment">{{i}}</div>
+				{% endfor %}
+
+				{% else %}
+
+				<h4>No Comments yet</h4>
+
+				{% endif %}	
+			</div>
+		</div>
 		<h1>Things to add to this page</h1>
 		<ul>
 			<li>google maps widget</li>

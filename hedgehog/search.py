@@ -4,16 +4,66 @@ import datetime
 import requests, json
 from operator import itemgetter
 
-url = "https://maps.googleapis.com/maps/api/place/textsearch/json?"
-details_url = "https://maps.googleapis.com/maps/api/place/details/json?place_id="
-geo_api_url = 'https://www.googleapis.com/geolocation/v1/geolocate?key='
 
 
-def getMyLocation():
-	raw_ipdata = requests.post(geo_api_url+api_key)
-	ipdata = raw_ipdata.json()
-	my_location = {'latitude': ipdata["location"]['lat'], 'longitude': ipdata["location"]['lng'] }
-	return my_location
+class GoogleRequests(object):
+	url = "https://maps.googleapis.com/maps/api/place/textsearch/json?"
+	details_url = "https://maps.googleapis.com/maps/api/place/details/json?place_id="
+	geo_api_url = 'https://www.googleapis.com/geolocation/v1/geolocate?key='
+
+	def getMyLocation():
+		raw_ipdata = requests.post(GoogleRequests.geo_api_url+api_key)
+		ipdata = raw_ipdata.json()
+		my_location = {'latitude': ipdata["location"]['lat'], 'longitude': ipdata["location"]['lng'] }
+		return my_location
+
+	def getDetailsFromGoogle(place, place_type, location):
+		search_term = place + " " + place_type + " in " + location
+		r = requests.get(GoogleRequests.url + 'query=' + search_term +
+	                        '&key=' + api_key)
+		x = r.json()
+		y = x['results']
+		if len(y) == 0:
+			return "No results found"
+		elif len(y) == 1:
+			place_search_name_words = place.split(" ")
+			lowercase_place_search_name_words = [word.lower() for word in place_search_name_words]
+			place_search_location_words = location.split(" ")
+			lowercase_place_search_location_words = [word.lower() for word in place_search_location_words]
+			name = y[0]['name']
+			result_name_words = name.split(" ")
+			lowercase_result_name_words = [word.lower() for word in result_name_words]
+			result_location = y[0]['formatted_address']
+			result_location_words = result_location.split(" ")
+			lowercase_result_location_words = [word.lower() for word in result_location_words]
+			name_match = False
+			location_match = False
+			for i in lowercase_place_search_location_words:
+				if i in (lowercase_result_location_words):
+					location_match = True
+			for j in lowercase_place_search_name_words:
+				if j in lowercase_result_name_words:
+					name_match = True
+			if name_match == True and location_match == True:
+				result = y[0]
+				info = {}
+				info['name'] = place
+				info['location'] = location
+				info['type'] = place_type
+				info['latitude'] = result['geometry']['location']['lat']
+				info['longitude'] = result['geometry']['location']['lng']
+				info['street address'] = result['formatted_address']
+				info['place_id'] = result['place_id']
+				r = requests.get(GoogleRequests.url + 'query=' + search_term +
+	                        '&key=' + api_key)
+				extra_details = requests.get(GoogleRequests.details_url + info['place_id'] + "&key=" + api_key)
+				a = extra_details.json()
+				b = a['result']
+				for k,v in b.items():
+					info[k] = v
+				return info
+			else: return "No results found"
+		else: return "Multiple Results found"
 
 def searchDB(search_term):
 	"""takes a search term and looks in the hedgehog DB for matches"""
@@ -42,60 +92,15 @@ def getDetailsFromDB(placename):
 	details['number of ratings'] = getTotalRatings(all_ratings)
 	details['average rating'] = getAvgScore(all_ratings)
 	details['true score'] = calculateTrueScore(all_ratings)
+	details['comments'] = getComments(all_ratings)
 	return details
 
 
-def getDetailsFromGoogle(place, place_type, location):
-	search_term = place + " " + place_type + " in " + location
-	r = requests.get(url + 'query=' + search_term +
-                        '&key=' + api_key)
-	x = r.json()
-	y = x['results']
-	if len(y) == 0:
-		return "No results found"
-	elif len(y) == 1:
-		place_search_name_words = place.split(" ")
-		lowercase_place_search_name_words = [word.lower() for word in place_search_name_words]
-		place_search_location_words = location.split(" ")
-		lowercase_place_search_location_words = [word.lower() for word in place_search_location_words]
-		name = y[0]['name']
-		result_name_words = name.split(" ")
-		lowercase_result_name_words = [word.lower() for word in result_name_words]
-		result_location = y[0]['formatted_address']
-		result_location_words = result_location.split(" ")
-		lowercase_result_location_words = [word.lower() for word in result_location_words]
-		name_match = False
-		location_match = False
-		for i in lowercase_place_search_location_words:
-			if i in (lowercase_result_location_words):
-				location_match = True
-		for j in lowercase_place_search_name_words:
-			if j in lowercase_result_name_words:
-				name_match = True
-		if name_match == True and location_match == True:
-			result = y[0]
-			info = {}
-			info['name'] = place
-			info['location'] = location
-			info['type'] = place_type
-			info['latitude'] = result['geometry']['location']['lat']
-			info['longitude'] = result['geometry']['location']['lng']
-			info['street address'] = result['formatted_address']
-			info['place_id'] = result['place_id']
-			r = requests.get(url + 'query=' + search_term +
-                        '&key=' + api_key)
-			extra_details = requests.get(details_url + info['place_id'] + "&key=" + api_key)
-			a = extra_details.json()
-			b = a['result']
-			for k,v in b.items():
-				info[k] = v
-			return info
-		else: return "No results found"
-	else: return "Multiple Results found"
+
 		
 
 def placesNearMe():
-	my_location = getMyLocation()
+	my_location = GoogleRequests.getMyLocation()
 	lat = my_location['latitude']
 	longi = my_location['longitude']	
 	closeness = 0.02
@@ -160,6 +165,15 @@ def calculateTrueScore(ratings):
 		score = 50
 	true_score = adjustForRatingsVolume(score, len(all_ratings))
 	return true_score
+
+def getComments(ratings):
+	comments = {'pros': [], 'cons': []}
+	for i in ratings:
+		if i.pros:
+			comments['pros'].append(i.pros)
+		if i.cons:
+			comments['cons'].append(i.cons)
+	return comments
 
 def calculateRaterWeight(rating):
 	if rating.rater == 0:

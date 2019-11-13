@@ -43,3 +43,20 @@
     float: left;
     margin-left: 5%;
 }
+
+.comments-container {
+    width: 90%;
+    height: 100px;
+    margin-left: 5%;
+    margin-top: 140px;
+}
+
+.container-box {
+	width: 49%;
+	float: left;
+	background-color: grey;
+}
+
+.cons {
+	margin-left: 2%;
+}
