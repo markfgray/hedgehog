@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta http-equiv="Cache-Control" content="no-cache"/>
 		<!-- Google Tag Manager -->
 		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -11,7 +12,10 @@
 		<title>Hedgehog</title>
 		<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" >
 		<link href="{{ url_for('static', filename='css/placedetails.css') }}" rel="stylesheet" >
-		<meta http-equiv="Cache-Control" content="no-cache"/>
+	    <link rel="stylesheet" href="../static/css/jqcloud.css">
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	    <script type="text/javascript" src="../static/js/jqcloud.js"></script>
+	    <script type="text/javascript" src="../static/js/wordcloud.js"></script>
 	</head>
 	<body>
 		<!-- Google Tag Manager (noscript) -->
@@ -37,39 +41,18 @@
 			<div class="address">Address: {{google_details['vicinity']}}</div>
 			<div class="website">Website: {{google_details['website']}}</div>
 			<div class="contact">Contact: {{google_details['formatted_phone_number']}}</div>
-			<div class="hours">Opening Hours: {{google_details['opening_hours']['weekday_text']}}</div>
 		</div>
 		<div class="comments-container">
 			<div class="pros container-box">
 				<h3>People Liked</h3>
-
-				{% if details['comments']['pros'] %}
-
-				{% for i in details['comments']['pros'] %}
-				<div class="comment">{{i}}</div>
-				{% endfor %}
-
-				{% else %}	
-
-				<h4>No Comments yet</h4>
-
-				{% endif %}		
+				<meta id="pros-word-cloud-data" data-content="{{pwcd}}">
+				<div id="pros_word_cloud" class="word-cloud"></div>		
 			</div>
 
 			<div class="cons container-box">
-				<h3>People Didn't Likey</h3>
-
-				{% if details['comments']['pros'] %}
-
-				{% for i in details['comments']['cons'] %}
-				<div class="comment">{{i}}</div>
-				{% endfor %}
-
-				{% else %}
-
-				<h4>No Comments yet</h4>
-
-				{% endif %}	
+				<h3>People Didn't Like</h3>
+				<meta id="cons-word-cloud-data" data-content="{{cwcd}}">
+				<div id="cons_word_cloud" class="word-cloud"></div>
 			</div>
 		</div>
 		<h1>Things to add to this page</h1>

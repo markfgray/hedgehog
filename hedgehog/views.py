@@ -2,9 +2,10 @@ from hedgehog import app, db, api_key
 from flask import render_template, request, url_for, redirect, session
 import datetime, requests
 from .forms import SearchForm, LoginForm, SignupForm, ReviewForm
-from .review import postReview, reviewNewPlace, suggestNewPlace
-from .search import searchDB, getDetailsFromDB, GoogleRequests, placesNearMe
+from .review import Review
+from .search import DBSearch, GoogleRequests
 from .models import User, Rating, Place
+from .wordcloudgenerator import generate
 
 photo_url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="
 
@@ -20,13 +21,13 @@ def index():
 @app.route('/search', methods=["GET"])
 def search(search_term):
 	form = ReviewForm()
-	results = searchDB(search_term)	
+	results = DBSearch.search(search_term)	
 	return render_template('results.html', results=results, search_term=search_term, form=form, name=session.get('name'))
 
 @app.route('/findPlaces', methods=["GET"])
 def findPlaces(search_term):
 	form = ReviewForm()
-	results = searchDB(search_term)	
+	results = DBSearch.search(search_term)	
 	return render_template('placestoreview.html', results=results, search_term=search_term, form=form)
 
 
@@ -39,17 +40,17 @@ def postAReview(placename):
 		if session.get('user_id'):
 			rater = session.get('user_id')
 		else: rater = 0
-		postReview(placename, request.form, rater)
+		Review.existing(placename, request.form, rater)
 		return redirect(url_for('index', name=session.get('name')))
 
 @app.route('/details/<placename>', methods=["GET","POST"])
 def placeDetails(placename):
 	if request.method == "GET":
-		basic_details = getDetailsFromDB(placename)
+		basic_details = DBSearch.getDetails(placename)
 		google_details = GoogleRequests.getDetailsFromGoogle(placename, basic_details['type'], basic_details['location'])
-		photo = requests.get(photo_url + google_details['photos'][0]['photo_reference'] + "&key=" + api_key)
-
-		return render_template("placedetails.html", placename=placename, details=basic_details, google_details=google_details, photo=photo)
+		pros_wordcloud = generate(basic_details['comments']['pros'])
+		cons_wordcloud = generate(basic_details['comments']['cons'])
+		return render_template("placedetails.html", placename=placename, details=basic_details, google_details=google_details, pwcd=pros_wordcloud, cwcd=cons_wordcloud)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -103,7 +104,7 @@ def signup():
 def leaveReview():
 
 	search_form = SearchForm()
-	local_places = placesNearMe()
+	local_places = DBSearch.placesNearMe()
 
 	if request.method == "GET":
 		return render_template("leavereview.html", search_form=search_form, local_places=local_places)
@@ -114,7 +115,7 @@ def leaveReview():
 @app.route("/suggestNewPlace", methods=["POST"])
 def suggestANewPlace():
 	data = request.form
-	if suggestNewPlace(data) == "Place Added":
+	if Review.suggest(data) == "Place Added":
 		return redirect(url_for('index', name=session.get('name')))
 	else: return render_template("placenotfound.html")	
 
@@ -123,7 +124,7 @@ def reviewANewPlace():
 	if session.get('user_id'):
 		rater = session.get('user_id')
 	else: rater = 0
-	reviewNewPlace(request.form, rater)
+	Review.new(request.form, rater)
 	return redirect(url_for('index', name=session.get('name')))
 
 
