@@ -21,15 +21,13 @@
 
 	<img id="logo" src="../static/img/HEDGEHOG.png" alt="Hedgehog Logo">
 	<div id="tagline">Ratings and Reviews You Can Trust</div>
-	<a class="home" href="/">
-		<img id="homeicon" src="../static/img/homeicon.svg" alt="homeicon">
-	</a>
 	<div class="nav-container">
-		
 	{% if name %}
+		  <a class="btn home" href="/">Home</a>
           <a class="btn profile">{{name}}</a>
 		  <a class="btn logout" href="/logout">Logout</a>
     {% else %}
+    	  <a class="btn home" href="/">Home</a>
     	  <a class="btn login" href="/login">Login</a>
 		  <a class="btn signup" href="/signup">Signup</a>
     {% endif %}
@@ -42,13 +40,17 @@
 	{% for result in results %}
 		<a href="/details/{{result['name']}}">
 			<div class="result" id="{{result['name']}}">
-				<div class="place-name"> {{result['name']}}</div>
-				<div class="place-type"> {{result['type']}}</div>
-				<div class="place-location">{{result['location']}}</div>
-				<div class="ratings-box">
-					<div class="place-score">Score: {{result['rating']}}</div>
-					<div class="place-number-of-votes">number of ratings: {{result['number of ratings']}}</div>
+				<div class="details-box">
+					<div class="place-name"> {{result['name']}}</div>
+					<div class="place-type"> {{result['type']}} </div>
+					<div class="place-location"> in {{result['location']}}</div>
 				</div>
+				<div class="ratings-box">
+					<div class="place-score">{{result['rating']}}</div>
+					<div class="place-number-of-votes">{{result['number of ratings']}} ratings</div>
+				</div>
+				
+				
 			</div>	
 		</a>
 	{% endfor %}

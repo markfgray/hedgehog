@@ -23,9 +23,11 @@
 	<div id="tagline">Ratings and Reviews You Can Trust</div>
 	<div class="nav-container">
 	{% if name %}
+		  <a class="btn about" href="/about">About</a>
           <a class="btn profile">{{name}}</a>
 		  <a class="btn logout" href="/logout">Logout</a>
     {% else %}
+    	  <a class="btn about" href="/about">About</a>
     	  <a class="btn login" href="/login">Login</a>
 		  <a class="btn signup" href="/signup">Signup</a>
     {% endif %}
@@ -35,7 +37,7 @@
 		<form method="POST" action="/">
 	        {{ form.hidden_tag() }}
 
-	        <p>Search for pubs, restaurants and bars</p>
+	        <div id="search-instructions">Search for pubs, restaurants and bars</div>
 
 	        {{ form.search(class='form-entry-field') }}
 	        

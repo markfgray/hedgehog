@@ -1,45 +1,46 @@
 .title-container {
-    background-color: beige;
-    height: 66px;
+    background-color: whitesmoke;
+    height: 120px;
     width: 90%;
     margin-left: 5%;
     margin-bottom: 10px;
 }
 
 .title {
-	font-size: 32px;
+	font-size: 54px;
+	text-align: center;
 }
 
 .subtitle {
-	font-size: 18px;
+	font-size: 34px;
+	text-align: center
 }
 
 .score-container {
-    height: 120px;
+    height: 170px;
     width: 25%;
     float: right;
-    background-color: pink;
+    background-color: whitesmoke;
     margin-right: 5%;
 }
 
 .score {
+	width: 80%;
+    font-size: 88px;
+    text-align: center;
+    margin-left: 10%;
+}
+
+.ratings-count {
 	font-size: 32px;
 	text-align: center;
 }
 
-.ratings-count {
-	font-size: 24px;
-	text-align: center;
-}
-
-.calc-info {
-	font-size: 10px;
-}
-
 .details-container {
-    height: 120px;
+    height: 170px;
+    font-size: 26px;
     width: 64%;
-    background-color: grey;
+    background-color: whitesmoke;
     float: left;
     margin-left: 5%;
 }
@@ -48,13 +49,13 @@
     width: 90%;
     height: 100px;
     margin-left: 5%;
-    margin-top: 140px;
+    margin-top: 200px;
 }
 
 .container-box {
 	width: 49%;
 	float: left;
-	background-color: grey;
+	background-color: whitesmoke;
 }
 
 .cons {
@@ -64,4 +65,13 @@
 .word-cloud {
 	width:100%;
 	height: 300px;
+}
+
+.details {
+	margin-top: 10px;
+	margin-left: 8px;
+}
+
+.address {
+	margin-top: 20px;
 }

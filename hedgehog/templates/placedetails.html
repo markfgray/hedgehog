@@ -25,22 +25,29 @@
 
 		<img id="logo" src="../static/img/HEDGEHOG.png" alt="Hedgehog Logo">
 		<div id="tagline">Ratings and Reviews You Can Trust</div>
-		<a class="home" href="/">
-		<img id="homeicon" src="../static/img/homeicon.svg" alt="homeicon">
-		</a>
+		<div class="nav-container">
+		{% if name %}
+			  <a class="btn home" href="/">Home</a>
+	          <a class="btn profile">{{name}}</a>
+			  <a class="btn logout" href="/logout">Logout</a>
+	    {% else %}
+	    	  <a class="btn home" href="/">Home</a>
+	    	  <a class="btn login" href="/login">Login</a>
+			  <a class="btn signup" href="/signup">Signup</a>
+	    {% endif %}
+		</div>
 		<div class="title-container">
 			<div class="title">{{placename}}</div>
 			<div class="subtitle">{{details['type']}} in {{details['location']}}</div>
 		</div>
 		<div class="score-container">
-			<div class="score">Rating: {{details['true score']}}</div>
-			<div class="calc-info">How was this calculated?</div>
+			<div class="score">{{details['true score']}}</div>
 			<div class="ratings-count">{{details['number of ratings']}} ratings</div>
 		</div>
 		<div class="details-container">
-			<div class="address">Address: {{google_details['vicinity']}}</div>
-			<div class="website">Website: {{google_details['website']}}</div>
-			<div class="contact">Contact: {{google_details['formatted_phone_number']}}</div>
+			<div class="address details">Address: {{google_details['vicinity']}}</div>
+			<div class="website details">Website: {{google_details['website']}}</div>
+			<div class="contact details">Contact: {{google_details['formatted_phone_number']}}</div>
 		</div>
 		<div class="comments-container">
 			<div class="pros container-box">
@@ -55,14 +62,6 @@
 				<div id="cons_word_cloud" class="word-cloud"></div>
 			</div>
 		</div>
-		<h1>Things to add to this page</h1>
-		<ul>
-			<li>google maps widget</li>
-			<li>Pictures</li>
-			<li>Rank amongst similar places in the vicinity</li>
-			<li>Recent Comments</li>
-			<li>Ads Ads Ads</li>
-		</ul>
 
 	</body>
 </html>

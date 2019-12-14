@@ -24,6 +24,10 @@ def search(search_term):
 	results = DBSearch.search(search_term)	
 	return render_template('results.html', results=results, search_term=search_term, form=form, name=session.get('name'))
 
+@app.route('/about', methods=["GET"])
+def about():	
+	return render_template('about.html', name=session.get('name'))
+
 @app.route('/findPlaces', methods=["GET"])
 def findPlaces(search_term):
 	form = ReviewForm()
