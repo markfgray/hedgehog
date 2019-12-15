@@ -3,7 +3,7 @@
     height: 120px;
     width: 90%;
     margin-left: 5%;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .title {
@@ -13,11 +13,12 @@
 
 .subtitle {
 	font-size: 34px;
-	text-align: center
+	text-align: center;
+	margin-top: 10px;
 }
 
 .score-container {
-    height: 170px;
+    height: 200px;
     width: 25%;
     float: right;
     background-color: whitesmoke;
@@ -37,7 +38,7 @@
 }
 
 .details-container {
-    height: 170px;
+    height: 200px;
     font-size: 26px;
     width: 64%;
     background-color: whitesmoke;
@@ -49,7 +50,7 @@
     width: 90%;
     height: 100px;
     margin-left: 5%;
-    margin-top: 200px;
+    margin-top: 230px;
 }
 
 .container-box {
@@ -70,8 +71,15 @@
 .details {
 	margin-top: 10px;
 	margin-left: 8px;
+	overflow: hidden;
 }
 
 .address {
+	margin-top: 20px;
+}
+
+.cloud-title {
+	font-size: 32px;
+	text-align: center;
 	margin-top: 20px;
 }

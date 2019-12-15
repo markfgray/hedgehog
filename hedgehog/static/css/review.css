@@ -6,10 +6,63 @@
     margin-top: 30px;
 }
 
-#submit {
-	width: 20%;
+.review-title {
+    font-size: 36px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.review-form {
+	height: 350px;
 }
 
 form h2 {
 	text-align: center;
+}
+
+.local {
+	width: 50%;
+	height: 30px;
+}
+
+.local-search-results {
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 20px;
+}
+
+.local-result {
+    width: 100%;
+    background-color: whitesmoke;
+    height: 110px;
+    font-size: 34px;
+    border: 2px solid black;
+    margin-bottom: 3px;
+    border-radius: 3px;
+    color: black;
+    text-decoration: none
+}
+
+.local-result:hover {
+    cursor: pointer;
+}
+
+.local-place-name {
+    width: 60%;
+    float: left;
+    margin-top: 12px;
+    margin-left: 5%;
+}
+
+.local-place-type {
+    width: 15%;
+    float: left;
+    margin-top: 12px;
+    margin-left: 5%;
+}
+
+.nearby-places-title {
+    font-size: 44px;
+    text-align: center;
+    margin-bottom: 20px;
 }

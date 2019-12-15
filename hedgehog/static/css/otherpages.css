@@ -10,26 +10,31 @@
 }
 
 #login-form {
-    width: 50%;
-    margin-left: 25%;
-    background-color: beige;
-    height:215px;
-    margin-top: 30px;
+    width: 90%;
+    margin-left: 5%;
+    background-color: whitesmoke;
+    height: 600px;
+    margin-top: 100px;
 }
-.signup-btn {    
-    width: 20%;
-    margin-top: 5px;   
+
+.signup-btn {
+    width: 80%;
+    margin-top: 5px;
+    margin-left: 10%;
+    margin-bottom: 20px;
 }
 
 .login-btn {
-    width: 20%;
-    margin-top: 15px;
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 51px;
 }
 
 .signup-form {
-	width: 60%;
-	margin-left: 20%;
-	background-color: beige;
-	border: 2px solid black;
+    width: 90%;
+    margin-left: 5%;
+    background-color: whitesmoke;
+    border: 2px solid black;
     border-radius: 5px;
+    margin-top: 20px;
 }

@@ -10,7 +10,7 @@
 		<!-- End Google Tag Manager -->
 		<title>Hedgehog</title>
 		<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" >	
-		<link href="{{ url_for('static', filename='css/results.css') }}" rel="stylesheet" >
+		<link href="{{ url_for('static', filename='css/review.css') }}" rel="stylesheet" >
 		<meta http-equiv="Cache-Control" content="no-cache"/>
 		<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="07cb2432-1f30-40c7-8cf5-b8e17220da9a" type="text/javascript" async></script>
 	</head>
@@ -33,17 +33,19 @@
 	    {% endif %}
 		</div>
 
-		<h2>Leave a review of a place you have visited</h2>
+		<div class="review-form form-container">
+			<div class="review-title"> Leave a review of a place you have visited</div>
 
-		<form method="POST" action="/leaveReview">
-			{{ search_form.hidden_tag() }}
+			<form method="POST" action="/leaveReview">
+				{{ search_form.hidden_tag() }}
 
-			{{ search_form.search(class='form-entry-field') }}
+				{{ search_form.search(class='form-entry-field') }}
 
-			{{ search_form.submit(class="btn search", id="submit") }}
-		</form>
+				{{ search_form.submit(class="btn search", id="submit") }}
+			</form>
+		</div>
 		<div class="local-search-results">
-			<h3>Places Nearby</h3>
+			<div class="nearby-places-title">Places Nearby</div>
 			{% if local_places %}
 
 			{% for result in local_places %}
@@ -51,7 +53,6 @@
 					<div class="local-result" id="{{result['name']}}">
 						<div class="local-place-name "> {{result['name']}}</div>
 						<div class="local-place-type"> {{result['type']}}</div>
-						<div class="local-place-location">{{result['location']}}</div>
 					</div>	
 				</a>	
 			{% endfor %}
