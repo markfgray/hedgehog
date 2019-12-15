@@ -78,10 +78,10 @@ class User(db.Model):
     first_name = db.Column(db.String())
     last_name = db.Column(db.String())
 
-    def __init__(self, email, username, password, created_on, last_login, first_name, last_name):
+    def __init__(self, email, username, pwdhash, created_on, last_login, first_name, last_name):
         self.email = email
         self.username = username
-        self.set_password(password)
+        self.set_password(pwdhash)
         self.created_on = created_on
         self.last_login = last_login
         self.first_name = first_name
