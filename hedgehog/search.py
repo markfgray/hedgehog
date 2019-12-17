@@ -98,6 +98,7 @@ class DBSearch(object):
 		
 	def placesNearMe():
 		my_location = GoogleRequests.getMyLocation()
+		print(my_location)
 		lat = my_location['latitude']
 		longi = my_location['longitude']	
 		closeness = 0.02
