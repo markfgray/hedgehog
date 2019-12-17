@@ -96,8 +96,7 @@ class DBSearch(object):
 		details['comments'] = Truescore.getComments(all_ratings)
 		return details
 		
-	def placesNearMe():
-		my_location = GoogleRequests.getMyLocation()
+	def placesNearMe(my_location):
 		print(my_location)
 		lat = my_location['latitude']
 		longi = my_location['longitude']	

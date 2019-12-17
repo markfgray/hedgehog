@@ -1,5 +1,5 @@
 from hedgehog import app, db, api_key
-from flask import render_template, request, url_for, redirect, session
+from flask import render_template, request, url_for, redirect, session, json
 import datetime, requests
 from .forms import SearchForm, LoginForm, SignupForm, ReviewForm
 from .review import Review
@@ -50,6 +50,7 @@ def postAReview(placename):
 @app.route('/details/<placename>', methods=["GET","POST"])
 def placeDetails(placename):
 	if request.method == "GET":
+		print(request.data)
 		basic_details = DBSearch.getDetails(placename)
 		google_details = GoogleRequests.getDetailsFromGoogle(placename, basic_details['type'], basic_details['location'])
 		pros_wordcloud = generate(basic_details['comments']['pros'])
@@ -108,10 +109,9 @@ def signup():
 def leaveReview():
 
 	search_form = SearchForm()
-	local_places = DBSearch.placesNearMe()
 
 	if request.method == "GET":
-		return render_template("leavereview.html", search_form=search_form, local_places=local_places)
+		return render_template("leavereview.html", search_form=search_form)
 	else:
 		search_term = request.form['search']
 		return findPlaces(search_term)
@@ -130,6 +130,15 @@ def reviewANewPlace():
 	else: rater = 0
 	Review.new(request.form, rater)
 	return redirect(url_for('index', name=session.get('name')))
+
+@app.route('/localPlaces', methods=["GET", "POST"])
+def localPlaces():
+	data = request.json
+	lati = data['latitude']
+	longi = data['longitude']
+	location = {'latitude': lati, 'longitude':longi}
+	places_nearby = DBSearch.placesNearMe(location)
+	return json.dumps(places_nearby)
 
 
 @app.route("/logout")

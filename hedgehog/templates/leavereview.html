@@ -11,6 +11,8 @@
 		<title>Hedgehog</title>
 		<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" >	
 		<link href="{{ url_for('static', filename='css/review.css') }}" rel="stylesheet" >
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../static/js/review.js"></script>
 		<meta http-equiv="Cache-Control" content="no-cache"/>
 		<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="07cb2432-1f30-40c7-8cf5-b8e17220da9a" type="text/javascript" async></script>
 	</head>
@@ -44,21 +46,16 @@
 				{{ search_form.submit(class="btn search", id="submit") }}
 			</form>
 		</div>
-		<div class="local-search-results">
+		
+		<div class="local-search-results" id="local-places">
 			<div class="nearby-places-title">Places Nearby</div>
-			{% if local_places %}
-
-			{% for result in local_places %}
-				<a href="/reviewpage/{{result['name']}}">
-					<div class="local-result" id="{{result['name']}}">
-						<div class="local-place-name "> {{result['name']}}</div>
-						<div class="local-place-type"> {{result['type']}}</div>
-					</div>	
-				</a>	
-			{% endfor %}
-
-			{% endif %}
+				
+					<!--<div class="local-result">
+						<div class="local-place-name"></div>
+						<div class="local-place-type"></div>
+					</div>	-->
+				
 		</div>
-
+		
 	</body>
 </html>
