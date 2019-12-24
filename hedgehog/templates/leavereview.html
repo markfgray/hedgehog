@@ -35,26 +35,26 @@
 	    {% endif %}
 		</div>
 
-		<div class="review-form form-container">
-			<div class="review-title"> Leave a review of a place you have visited</div>
+		<div class="new-place-form">
+			<form method="POST" action="/suggestNewPlace">
+				{{ form.hidden_tag() }}
 
-			<form method="POST" action="/leaveReview">
-				{{ search_form.hidden_tag() }}
+				<div class="form-group">
+				  {{ form.place.label(class='form-label') }}
+				  {{ form.place(class='form-entry-field') }}
+				</div>
+				<div class="form-group">
+				  {{ form.place_type.label(class='form-label') }}
+				  {{ form.place_type(class='form-select-field') }}
+				</div>
+				<div class="form-group">
+				  {{ form.location.label(class='form-label') }}
+				  {{ form.location(class='form-entry-field') }}
+				</div>
 
-				{{ search_form.search(class='form-entry-field') }}
+				{{ form.submit(class="btn submit") }}
 
-				{{ search_form.submit(class="btn search", id="submit") }}
 			</form>
-		</div>
-		
-		<div class="local-search-results" id="local-places">
-			<div class="nearby-places-title">Places Nearby</div>
-				
-					<!--<div class="local-result">
-						<div class="local-place-name"></div>
-						<div class="local-place-type"></div>
-					</div>	-->
-				
 		</div>
 		
 	</body>

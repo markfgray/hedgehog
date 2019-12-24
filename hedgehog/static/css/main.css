@@ -7,6 +7,10 @@ form {
     margin-top: 14px;
 }
 
+.link {
+    text-decoration: none;
+    color: black;
+}
 #logo {
     position: absolute;
     width: 50%;
@@ -65,7 +69,7 @@ form {
 }
 
 .search-form {
-    height: 600px;
+    height: 400px;
 }
 
 #search-instructions {
@@ -142,23 +146,52 @@ form {
     margin-bottom: 20px;
 }
 
-.leave-review {
-    display: block;
-    background-color: silver;
-    width: 80%;
-    height: 100px;
-    line-height: 100px;
-    margin-left: 10%;
-    margin-top: 30px;
-    font-size: 60px;
-    text-decoration: none;
+.local {
+    width: 50%;
+    height: 30px;
+}
+
+.local-search-results {
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 20px;
+}
+
+.local-result {
+    width: 100%;
+    background-color: whitesmoke;
+    height: 110px;
+    font-size: 34px;
+    border: 2px solid black;
+    margin-bottom: 3px;
+    border-radius: 3px;
     color: black;
+    text-decoration: none
 }
 
-.leave-review:hover {
-    background-color: grey;
+.local-result:hover {
+    cursor: pointer;
 }
 
+.local-place-name {
+    width: 60%;
+    float: left;
+    margin-top: 12px;
+    margin-left: 5%;
+}
+
+.local-place-type {
+    width: 15%;
+    float: left;
+    margin-top: 12px;
+    margin-left: 5%;
+}
+
+.nearby-places-title {
+    font-size: 44px;
+    text-align: center;
+    margin-bottom: 20px;
+}
 
 @media (max-width: 810px) {
   

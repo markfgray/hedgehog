@@ -28,12 +28,6 @@ def search(search_term):
 def about():	
 	return render_template('about.html', name=session.get('name'))
 
-@app.route('/findPlaces', methods=["GET"])
-def findPlaces(search_term):
-	form = ReviewForm()
-	results = DBSearch.search(search_term)	
-	return render_template('placestoreview.html', results=results, search_term=search_term, form=form)
-
 
 @app.route('/reviewpage/<placename>', methods=["GET", "POST"])
 def postAReview(placename):
@@ -50,7 +44,6 @@ def postAReview(placename):
 @app.route('/details/<placename>', methods=["GET","POST"])
 def placeDetails(placename):
 	if request.method == "GET":
-		print(request.data)
 		basic_details = DBSearch.getDetails(placename)
 		google_details = GoogleRequests.getDetailsFromGoogle(placename, basic_details['type'], basic_details['location'])
 		pros_wordcloud = generate(basic_details['comments']['pros'])
@@ -108,10 +101,10 @@ def signup():
 @app.route("/leaveReview", methods=["GET", "POST"])
 def leaveReview():
 
-	search_form = SearchForm()
+	form = ReviewForm()
 
 	if request.method == "GET":
-		return render_template("leavereview.html", search_form=search_form)
+		return render_template("leavereview.html", form=form)
 	else:
 		search_term = request.form['search']
 		return findPlaces(search_term)
